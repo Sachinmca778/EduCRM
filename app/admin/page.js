@@ -5,7 +5,7 @@ import {
   Home, User, Settings, UserCircle2, TrendingUp, Banknote, Search, Filter,
   ChevronDown, ChevronUp, Plus, MoreHorizontal, Download, Eye, Edit, Trash2,
   Phone, Mail, MapPin, Clock, Star, CheckCircle, XCircle, Activity, Target,
-  GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight, Bell
+  GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight, Bell, Trophy
 } from "lucide-react";
 import SmartNotification from "../components/SmartNotification";
 import LiveActivityFeed from "../components/LiveActivityFeed";
@@ -222,6 +222,7 @@ export default function AdminDashboard() {
     { icon: <BookOpen size={20} />, label: "Students" },
     { icon: <AlertTriangle size={20} />, label: "Fees" },
     { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
+    { icon: <Trophy size={20} />, label: "Gamification", badge: "NEW", href: "/gamification" },
     { icon: <UserCircle2 size={20} />, label: "Branches" },
     { icon: <Settings size={20} />, label: "Settings" },
   ];
