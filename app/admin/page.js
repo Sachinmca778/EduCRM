@@ -223,6 +223,7 @@ export default function AdminDashboard() {
     { icon: <AlertTriangle size={20} />, label: "Fees" },
     { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
     { icon: <Trophy size={20} />, label: "Gamification", badge: "NEW", href: "/gamification" },
+    { icon: <BookOpen size={20} />, label: "Courses", badge: "4", href: "/courses" },
     { icon: <UserCircle2 size={20} />, label: "Branches" },
     { icon: <Settings size={20} />, label: "Settings" },
   ];
