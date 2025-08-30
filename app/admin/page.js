@@ -5,10 +5,11 @@ import {
   Home, User, Settings, UserCircle2, TrendingUp, Banknote, Search, Filter,
   ChevronDown, ChevronUp, Plus, MoreHorizontal, Download, Eye, Edit, Trash2,
   Phone, Mail, MapPin, Clock, Star, CheckCircle, XCircle, Activity, Target,
-  GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight
+  GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight, Bell
 } from "lucide-react";
 import SmartNotification from "../components/SmartNotification";
 import LiveActivityFeed from "../components/LiveActivityFeed";
+
 import {
   LineChart as RechartsLineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   CartesianGrid, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, Area, AreaChart
@@ -110,10 +111,13 @@ function StatCard({ icon, title, value, change, changeType = "positive", classNa
   );
 }
 
-function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
+function SidebarItem({ icon, label, active, collapsed, badge, href, onClick }) {
+  const Component = href ? 'a' : 'button';
+  const props = href ? { href } : { onClick };
+  
   return (
-    <button
-      onClick={onClick}
+    <Component
+      {...props}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative ${
         active 
           ? "bg-primary text-primary-foreground shadow-sm" 
@@ -134,7 +138,7 @@ function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
       {collapsed && badge && (
         <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
       )}
-    </button>
+    </Component>
   );
 }
 
@@ -217,7 +221,7 @@ export default function AdminDashboard() {
     { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8" },
     { icon: <BookOpen size={20} />, label: "Students" },
     { icon: <AlertTriangle size={20} />, label: "Fees" },
-    { icon: <User size={20} />, label: "Notifications", badge: "3" },
+    { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
     { icon: <UserCircle2 size={20} />, label: "Branches" },
     { icon: <Settings size={20} />, label: "Settings" },
   ];
@@ -256,6 +260,7 @@ export default function AdminDashboard() {
               active={item.active}
               collapsed={sidebarCollapsed}
               badge={item.badge}
+              href={item.href}
             />
           ))}
         </nav>
@@ -482,6 +487,8 @@ export default function AdminDashboard() {
             </Card>
           </div>
         </div>
+
+
       </main>
       <SmartNotification />
     </div>
