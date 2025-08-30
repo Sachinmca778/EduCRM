@@ -157,32 +157,32 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="bg-card border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link href="/admin" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <Link href="/admin" className="p-2 hover:bg-accent rounded-lg transition-colors">
+                <ArrowLeft className="w-5 h-5 text-muted-foreground" />
               </Link>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                  <BookOpen className="w-6 h-6 text-white" />
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <BookOpen className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">Course & Batch Management</h1>
-                  <p className="text-sm text-gray-600">Manage courses, batches, and teacher assignments</p>
+                  <h1 className="text-xl font-bold text-foreground">Course & Batch Management</h1>
+                  <p className="text-sm text-muted-foreground">Manage courses, batches, and teacher assignments</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <Settings className="w-5 h-5 text-gray-600" />
+              <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+                <Settings className="w-5 h-5 text-muted-foreground" />
               </button>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 Add Course
@@ -198,47 +198,47 @@ export default function CoursesPage() {
           {/* Left Sidebar - Quick Stats */}
           <div className="lg:col-span-1 space-y-6">
             {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Quick Stats</h3>
+            <div className="bg-card border border-border rounded-xl shadow-sm p-6">
+              <h3 className="font-semibold text-foreground mb-4">Quick Stats</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Total Courses</span>
-                  <span className="font-semibold text-gray-900">{courses.length}</span>
+                  <span className="text-sm text-muted-foreground">Total Courses</span>
+                  <span className="font-semibold text-foreground">{courses.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Active Batches</span>
+                  <span className="text-sm text-muted-foreground">Active Batches</span>
                   <span className="font-semibold text-green-600">{batches.filter(b => b.status === 'active').length}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Total Students</span>
+                  <span className="text-sm text-muted-foreground">Total Students</span>
                   <span className="font-semibold text-blue-600">{courses.reduce((sum, course) => sum + course.students, 0)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Available Teachers</span>
+                  <span className="text-sm text-muted-foreground">Available Teachers</span>
                   <span className="font-semibold text-purple-600">{teachers.length}</span>
                 </div>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="bg-card border border-border rounded-xl shadow-sm p-6">
+              <h3 className="font-semibold text-foreground mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <button 
                   onClick={() => setShowAddModal(true)}
-                  className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+                  className="w-full flex items-center gap-3 p-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all"
                 >
                   <Plus className="w-4 h-4" />
                   <span className="text-sm font-medium">Add New Course</span>
                 </button>
                 <button 
                   onClick={() => setShowBatchModal(true)}
-                  className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all"
+                  className="w-full flex items-center gap-3 p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all"
                 >
                   <Users className="w-4 h-4" />
                   <span className="text-sm font-medium">Create Batch</span>
                 </button>
-                <button className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all">
+                <button className="w-full flex items-center gap-3 p-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-all">
                   <Calendar className="w-4 h-4" />
                   <span className="text-sm font-medium">Schedule Classes</span>
                 </button>
@@ -246,20 +246,20 @@ export default function CoursesPage() {
             </div>
 
             {/* Teacher Availability */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Teacher Availability</h3>
+            <div className="bg-card border border-border rounded-xl shadow-sm p-6">
+              <h3 className="font-semibold text-foreground mb-4">Teacher Availability</h3>
               <div className="space-y-3">
                 {teachers.map((teacher) => (
-                  <div key={teacher.id} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
+                  <div key={teacher.id} className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-accent transition-colors">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{teacher.name}</p>
-                      <p className="text-xs text-gray-600">{teacher.subjects.join(", ")}</p>
+                      <p className="text-sm font-medium text-foreground truncate">{teacher.name}</p>
+                      <p className="text-xs text-muted-foreground">{teacher.subjects.join(", ")}</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs text-gray-600">{teacher.students} students</div>
+                      <div className="text-xs text-muted-foreground">{teacher.students} students</div>
                       <div className="text-xs text-yellow-600">⭐ {teacher.rating}</div>
                     </div>
                   </div>
@@ -271,8 +271,8 @@ export default function CoursesPage() {
           {/* Main Content Area */}
           <div className="lg:col-span-3 space-y-6">
             {/* Tabs */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-              <div className="flex border-b border-gray-200">
+            <div className="bg-card border border-border rounded-xl shadow-sm">
+              <div className="flex border-b border-border">
                 {[
                   { id: "catalog", label: "📚 Course Catalog", icon: BookOpen },
                   { id: "batches", label: "👥 Batch Management", icon: Users },
@@ -284,8 +284,8 @@ export default function CoursesPage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
                       activeTab === tab.id
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-600 hover:text-gray-900"
+                        ? "text-primary border-b-2 border-primary"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -299,20 +299,20 @@ export default function CoursesPage() {
                 {activeTab === "catalog" && (
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Available Courses</h3>
+                      <h3 className="text-lg font-semibold text-foreground">Available Courses</h3>
                       <div className="flex items-center gap-2">
-                        <Search className="w-4 h-4 text-gray-400" />
+                        <Search className="w-4 h-4 text-muted-foreground" />
                         <input
                           type="text"
                           placeholder="Search courses..."
-                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="px-3 py-2 border border-border rounded-lg text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {courses.map((course) => (
-                        <div key={course.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
+                        <div key={course.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all">
                           <div className="relative">
                             <img src={course.image} alt={course.name} className="w-full h-48 object-cover" />
                             <div className="absolute top-3 right-3">
@@ -320,7 +320,7 @@ export default function CoursesPage() {
                                 {course.status}
                               </span>
                             </div>
-                            <div className="absolute top-3 left-3 flex items-center gap-1 bg-white/90 px-2 py-1 rounded-full">
+                            <div className="absolute top-3 left-3 flex items-center gap-1 bg-card/90 px-2 py-1 rounded-full">
                               <Star className="w-3 h-3 text-yellow-500 fill-current" />
                               <span className="text-xs font-medium">{course.rating}</span>
                             </div>
@@ -328,28 +328,28 @@ export default function CoursesPage() {
                           
                           <div className="p-6">
                             <div className="flex items-start justify-between mb-3">
-                              <h4 className="font-semibold text-gray-900 text-lg">{course.name}</h4>
+                              <h4 className="font-semibold text-foreground text-lg">{course.name}</h4>
                               <div className="text-right">
-                                <div className="text-lg font-bold text-blue-600">{course.fee}</div>
-                                <div className="text-xs text-gray-600">Total Fee</div>
+                                <div className="text-lg font-bold text-primary">{course.fee}</div>
+                                <div className="text-xs text-muted-foreground">Total Fee</div>
                               </div>
                             </div>
                             
-                            <p className="text-sm text-gray-600 mb-4">{course.description}</p>
+                            <p className="text-sm text-muted-foreground mb-4">{course.description}</p>
                             
                             <div className="space-y-2 mb-4">
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Clock className="w-4 h-4" />
                                 <span>{course.duration}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Users className="w-4 h-4" />
                                 <span>{course.students}/{course.maxCapacity} students</span>
                                 <span className={`text-xs ${getCapacityColor(getCapacityPercentage(course.students, course.maxCapacity))}`}>
                                   ({getCapacityPercentage(course.students, course.maxCapacity)}% full)
                                 </span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <MapPin className="w-4 h-4" />
                                 <span>{course.location}</span>
                               </div>
@@ -357,18 +357,18 @@ export default function CoursesPage() {
                             
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <User className="w-4 h-4 text-gray-400" />
-                                <span className="text-sm text-gray-600">{course.teacher}</span>
+                                <User className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">{course.teacher}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                  <Eye className="w-4 h-4 text-gray-600" />
+                                <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+                                  <Eye className="w-4 h-4 text-muted-foreground" />
                                 </button>
-                                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                  <Edit className="w-4 h-4 text-gray-600" />
+                                <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+                                  <Edit className="w-4 h-4 text-muted-foreground" />
                                 </button>
-                                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                  <MoreHorizontal className="w-4 h-4 text-gray-600" />
+                                <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+                                  <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
                                 </button>
                               </div>
                             </div>
@@ -382,10 +382,10 @@ export default function CoursesPage() {
                 {activeTab === "batches" && (
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Batch Management</h3>
+                      <h3 className="text-lg font-semibold text-foreground">Batch Management</h3>
                       <button
                         onClick={() => setShowBatchModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all"
                       >
                         <Plus className="w-4 h-4" />
                         Create Batch
@@ -394,11 +394,11 @@ export default function CoursesPage() {
                     
                     <div className="space-y-4">
                       {batches.map((batch) => (
-                        <div key={batch.id} className="bg-white border border-gray-200 rounded-xl p-6">
+                        <div key={batch.id} className="bg-card border border-border rounded-xl p-6">
                           <div className="flex items-center justify-between mb-4">
                             <div>
-                              <h4 className="font-semibold text-gray-900 text-lg">{batch.name}</h4>
-                              <p className="text-sm text-gray-600">{courses.find(c => c.id === batch.courseId)?.name}</p>
+                              <h4 className="font-semibold text-foreground text-lg">{batch.name}</h4>
+                              <p className="text-sm text-muted-foreground">{courses.find(c => c.id === batch.courseId)?.name}</p>
                             </div>
                             <span className={`px-3 py-1 text-sm rounded-full ${getStatusColor(batch.status)}`}>
                               {batch.status}
@@ -407,29 +407,29 @@ export default function CoursesPage() {
                           
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div className="flex items-center gap-2">
-                              <User className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-600">{batch.teacher}</span>
+                              <User className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">{batch.teacher}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Users className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-600">{batch.students}/{batch.maxStudents} students</span>
+                              <Users className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">{batch.students}/{batch.maxStudents} students</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <MapPin className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-600">{batch.room}</span>
+                              <MapPin className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">{batch.room}</span>
                             </div>
                           </div>
                           
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-600">{batch.schedule}</span>
+                              <Calendar className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">{batch.schedule}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button className="px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
+                              <button className="px-3 py-1 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors">
                                 View Details
                               </button>
-                              <button className="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+                              <button className="px-3 py-1 text-sm bg-accent text-muted-foreground rounded-lg hover:bg-accent/80 transition-colors">
                                 Edit
                               </button>
                             </div>
@@ -536,25 +536,25 @@ export default function CoursesPage() {
       {/* Add Course Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+          <div className="bg-card border border-border rounded-xl p-6 w-full max-w-md mx-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Add New Course</h3>
-              <button onClick={() => setShowAddModal(false)} className="p-1 hover:bg-gray-100 rounded">
+              <h3 className="font-semibold text-foreground">Add New Course</h3>
+              <button onClick={() => setShowAddModal(false)} className="p-1 hover:bg-accent rounded">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="space-y-4">
-              <input type="text" placeholder="Course Name" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <select className="w-full p-2 border border-gray-300 rounded-lg">
+              <input type="text" placeholder="Course Name" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <select className="w-full p-2 border border-border rounded-lg bg-background text-foreground">
                 <option>Select Category</option>
                 <option>Engineering</option>
                 <option>Medical</option>
                 <option>Management</option>
               </select>
-              <input type="text" placeholder="Duration" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <input type="text" placeholder="Fee" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <input type="number" placeholder="Max Capacity" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <button className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+              <input type="text" placeholder="Duration" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <input type="text" placeholder="Fee" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <input type="number" placeholder="Max Capacity" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <button className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all">
                 Create Course
               </button>
             </div>
@@ -565,30 +565,30 @@ export default function CoursesPage() {
       {/* Add Batch Modal */}
       {showBatchModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+          <div className="bg-card border border-border rounded-xl p-6 w-full max-w-md mx-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Create New Batch</h3>
-              <button onClick={() => setShowBatchModal(false)} className="p-1 hover:bg-gray-100 rounded">
+              <h3 className="font-semibold text-foreground">Create New Batch</h3>
+              <button onClick={() => setShowBatchModal(false)} className="p-1 hover:bg-accent rounded">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="space-y-4">
-              <input type="text" placeholder="Batch Name" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <select className="w-full p-2 border border-gray-300 rounded-lg">
+              <input type="text" placeholder="Batch Name" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <select className="w-full p-2 border border-border rounded-lg bg-background text-foreground">
                 <option>Select Course</option>
                 {courses.map(course => (
                   <option key={course.id}>{course.name}</option>
                 ))}
               </select>
-              <select className="w-full p-2 border border-gray-300 rounded-lg">
+              <select className="w-full p-2 border border-border rounded-lg bg-background text-foreground">
                 <option>Select Teacher</option>
                 {teachers.map(teacher => (
                   <option key={teacher.id}>{teacher.name}</option>
                 ))}
               </select>
-              <input type="number" placeholder="Max Students" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <input type="text" placeholder="Schedule" className="w-full p-2 border border-gray-300 rounded-lg" />
-              <button className="w-full px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all">
+              <input type="number" placeholder="Max Students" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <input type="text" placeholder="Schedule" className="w-full p-2 border border-border rounded-lg bg-background text-foreground" />
+              <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all">
                 Create Batch
               </button>
             </div>
