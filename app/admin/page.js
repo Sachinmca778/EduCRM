@@ -7,6 +7,7 @@ import {
   Phone, Mail, MapPin, Clock, Star, CheckCircle, XCircle, Activity, Target,
   GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight
 } from "lucide-react";
+import SmartNotification from "../components/SmartNotification";
 import {
   LineChart as RechartsLineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   CartesianGrid, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, Area, AreaChart
@@ -520,6 +521,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </main>
+      <SmartNotification />
     </div>
   );
 }

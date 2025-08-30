@@ -1,12 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Menu, X, Users, BookOpen, CalendarClock, CalendarDays,
   FileText, ThumbsUp, AlertTriangle, Bell, Home, User, Settings, UserCircle2,
   ArrowLeft, ArrowRight, CheckCircle, XCircle, TrendingUp, Target, Award,
   GraduationCap, Clock, Star, Phone, Mail, MapPin, MoreHorizontal, Eye, Edit,
-  Download, Share2, BarChart3, PieChart, Activity
+  Download, Share2, BarChart3, PieChart, Activity, Brain, Trophy, Zap,
+  MessageSquare, Send, Users2, Target as TargetIcon, TrendingDown, Crown,
+  Lightbulb, BookOpen as BookOpenIcon, Calendar, Gift, Rocket, Shield, Minus
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
@@ -37,6 +39,9 @@ function Badge({ variant = "default", children, className = "" }) {
     warning: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
     destructive: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
     primary: "bg-primary/10 text-primary",
+    gold: "bg-gradient-to-r from-yellow-400 to-orange-500 text-white",
+    silver: "bg-gradient-to-r from-gray-400 to-gray-600 text-white",
+    bronze: "bg-gradient-to-r from-orange-600 to-red-600 text-white",
   };
   
   return (
@@ -59,7 +64,7 @@ function StatCard({ icon, title, value, change, changeType = "positive", classNa
                 {changeType === "positive" ? (
                   <TrendingUp className="w-4 h-4 text-green-600 mr-1" />
                 ) : (
-                  <TrendingUp className="w-4 h-4 text-red-600 mr-1 rotate-180" />
+                  <TrendingDown className="w-4 h-4 text-red-600 mr-1" />
                 )}
                 <span className={`text-sm font-medium ${changeType === "positive" ? "text-green-600" : "text-red-600"}`}>
                   {change}
@@ -116,6 +121,269 @@ function ProgressBar({ value, max = 100, className = "" }) {
   );
 }
 
+// AI Success Predictor Component
+function AISuccessPredictor({ studentData }) {
+  const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate AI prediction
+    setTimeout(() => {
+      const successProbability = 85 + Math.random() * 10;
+      const recommendations = [
+        "Focus on Physics practical applications",
+        "Increase study time for Mathematics by 30 minutes daily",
+        "Join peer study groups for Chemistry",
+        "Practice previous year papers for better exam preparation"
+      ];
+      
+      setPrediction({
+        probability: Math.round(successProbability),
+        recommendations,
+        riskFactors: ["Inconsistent attendance in Physics", "Need more practice in Calculus"],
+        strengths: ["Excellent Chemistry performance", "Strong analytical skills"]
+      });
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <Card className="animate-pulse">
+        <CardContent>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 bg-muted rounded-lg" />
+            <div className="h-4 bg-muted rounded w-32" />
+          </div>
+          <div className="space-y-2">
+            <div className="h-3 bg-muted rounded w-full" />
+            <div className="h-3 bg-muted rounded w-3/4" />
+            <div className="h-3 bg-muted rounded w-1/2" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Brain className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-foreground">AI Success Predictor</h3>
+            <p className="text-sm text-muted-foreground">Powered by Machine Learning</p>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary mb-2">{prediction.probability}%</div>
+            <p className="text-sm text-muted-foreground">Success Probability</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                <TargetIcon className="w-4 h-4 text-green-600" />
+                Strengths
+              </h4>
+              <ul className="space-y-1">
+                {prediction.strengths.map((strength, index) => (
+                  <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                    {strength}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-orange-600" />
+                Areas to Improve
+              </h4>
+              <ul className="space-y-1">
+                {prediction.riskFactors.map((risk, index) => (
+                  <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                    <XCircle className="w-3 h-3 text-orange-600" />
+                    {risk}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-blue-600" />
+              AI Recommendations
+            </h4>
+            <ul className="space-y-2">
+              {prediction.recommendations.map((rec, index) => (
+                <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
+                  {rec}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Gamification Component
+function PerformanceGamification({ achievements, level, points }) {
+  const achievementsList = [
+    { id: 1, title: "Perfect Attendance", icon: <Calendar className="w-4 h-4" />, earned: true },
+    { id: 2, title: "Math Master", icon: <BookOpenIcon className="w-4 h-4" />, earned: true },
+    { id: 3, title: "Chemistry Champion", icon: <Trophy className="w-4 h-4" />, earned: true },
+    { id: 4, title: "Study Streak", icon: <Zap className="w-4 h-4" />, earned: false },
+    { id: 5, title: "Peer Helper", icon: <Users2 className="w-4 h-4" />, earned: false },
+  ];
+
+  return (
+    <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <Crown className="w-5 h-5 text-yellow-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Achievements & Rewards</h3>
+              <p className="text-sm text-muted-foreground">Level {level} • {points} Points</p>
+            </div>
+          </div>
+          <Badge variant="gold">Top Performer</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center p-3 bg-white rounded-lg border">
+              <div className="text-2xl font-bold text-yellow-600">{level}</div>
+              <div className="text-xs text-muted-foreground">Current Level</div>
+            </div>
+            <div className="text-center p-3 bg-white rounded-lg border">
+              <div className="text-2xl font-bold text-blue-600">{points}</div>
+              <div className="text-xs text-muted-foreground">Total Points</div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-foreground mb-3">Recent Achievements</h4>
+            <div className="space-y-2">
+              {achievementsList.slice(0, 3).map((achievement) => (
+                <div key={achievement.id} className={`flex items-center gap-3 p-2 rounded-lg ${
+                  achievement.earned ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'
+                }`}>
+                  <div className={`p-1 rounded ${
+                    achievement.earned ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    {achievement.icon}
+                  </div>
+                  <span className={`text-sm ${achievement.earned ? 'text-green-800' : 'text-gray-500'}`}>
+                    {achievement.title}
+                  </span>
+                  {achievement.earned && <CheckCircle className="w-4 h-4 text-green-600 ml-auto" />}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Parent Communication Hub
+function ParentCommunicationHub() {
+  const [messages, setMessages] = useState([
+    { id: 1, from: "parent", message: "How is Ananya performing in Physics?", time: "2 hours ago", status: "unread" },
+    { id: 2, from: "teacher", message: "Excellent progress! She scored 92% in the last test.", time: "1 hour ago", status: "read" },
+    { id: 3, from: "parent", message: "Thank you! When is the next parent-teacher meeting?", time: "30 min ago", status: "unread" },
+  ]);
+
+  const [newMessage, setNewMessage] = useState("");
+
+  const sendMessage = () => {
+    if (newMessage.trim()) {
+      setMessages([...messages, {
+        id: messages.length + 1,
+        from: "teacher",
+        message: newMessage,
+        time: "Just now",
+        status: "sent"
+      }]);
+      setNewMessage("");
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <MessageSquare className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Parent Communication Hub</h3>
+              <p className="text-sm text-muted-foreground">Real-time updates & messaging</p>
+            </div>
+          </div>
+          <Badge variant="primary">Live</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="h-64 overflow-y-auto space-y-3">
+            {messages.map((msg) => (
+              <div key={msg.id} className={`flex ${msg.from === 'parent' ? 'justify-start' : 'justify-end'}`}>
+                <div className={`max-w-xs p-3 rounded-lg ${
+                  msg.from === 'parent' 
+                    ? 'bg-gray-100 text-gray-800' 
+                    : 'bg-blue-600 text-white'
+                }`}>
+                  <p className="text-sm">{msg.message}</p>
+                  <p className={`text-xs mt-1 ${
+                    msg.from === 'parent' ? 'text-gray-500' : 'text-blue-100'
+                  }`}>
+                    {msg.time}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            />
+            <button
+              onClick={sendMessage}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // Enhanced Data
 const testScores = [
   { month: "Jan", score: 72, target: 80 },
@@ -136,11 +404,11 @@ const attendanceData = [
 ];
 
 const subjectProgress = [
-  { subject: "Mathematics", progress: 85, grade: "A", color: "#3b82f6" },
-  { subject: "Physics", progress: 78, grade: "B+", color: "#10b981" },
-  { subject: "Chemistry", progress: 90, grade: "A+", color: "#f59e0b" },
-  { subject: "English", progress: 72, grade: "B", color: "#ef4444" },
-  { subject: "Computer Science", progress: 88, grade: "A", color: "#8b5cf6" },
+  { subject: "Mathematics", progress: 85, grade: "A", color: "#3b82f6", trend: "up" },
+  { subject: "Physics", progress: 78, grade: "B+", color: "#10b981", trend: "up" },
+  { subject: "Chemistry", progress: 90, grade: "A+", color: "#f59e0b", trend: "stable" },
+  { subject: "English", progress: 72, grade: "B", color: "#ef4444", trend: "down" },
+  { subject: "Computer Science", progress: 88, grade: "A", color: "#8b5cf6", trend: "up" },
 ];
 
 const recentAssignments = [
@@ -239,6 +507,15 @@ export default function StudentDashboard() {
       case "positive": return <ThumbsUp className="w-4 h-4 text-green-600" />;
       case "constructive": return <Target className="w-4 h-4 text-blue-600" />;
       default: return <Activity className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
+  const getTrendIcon = (trend) => {
+    switch (trend) {
+      case "up": return <TrendingUp className="w-3 h-3 text-green-600" />;
+      case "down": return <TrendingDown className="w-3 h-3 text-red-600" />;
+      case "stable": return <Minus className="w-3 h-3 text-gray-600" />;
+      default: return null;
     }
   };
 
@@ -353,6 +630,12 @@ export default function StudentDashboard() {
             ))}
           </div>
 
+          {/* AI Success Predictor & Gamification */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AISuccessPredictor studentData={{}} />
+            <PerformanceGamification achievements={[]} level={8} points={1250} />
+          </div>
+
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Test Score Progress */}
@@ -435,6 +718,7 @@ export default function StudentDashboard() {
                             style={{ backgroundColor: subject.color }}
                           />
                           <span className="text-sm font-medium text-foreground">{subject.subject}</span>
+                          {getTrendIcon(subject.trend)}
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="primary">{subject.grade}</Badge>
@@ -448,6 +732,9 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Parent Communication Hub */}
+          <ParentCommunicationHub />
 
           {/* Recent Assignments & Feedback */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
