@@ -8,6 +8,7 @@ import {
   GraduationCap, Award, BarChart3, PieChart, LineChart, ArrowUpRight, ArrowDownRight
 } from "lucide-react";
 import SmartNotification from "../components/SmartNotification";
+import LiveActivityFeed from "../components/LiveActivityFeed";
 import {
   LineChart as RechartsLineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   CartesianGrid, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, Area, AreaChart
@@ -438,49 +439,10 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-          {/* Recent Activities & Top Courses */}
+          {/* Live Activity Feed & Top Courses */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Recent Activities */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">Recent Activities</h3>
-                    <p className="text-sm text-muted-foreground">Latest student interactions</p>
-                  </div>
-                  <button className="text-sm text-primary hover:underline">View all</button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivities.map((activity) => (
-                    <div key={activity.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-accent transition-colors">
-                      <div className="flex-shrink-0">
-                        {activity.type === "enrollment" && <User className="w-5 h-5 text-green-600" />}
-                        {activity.type === "payment" && <DollarSign className="w-5 h-5 text-blue-600" />}
-                        {activity.type === "demo" && <CalendarClock className="w-5 h-5 text-orange-600" />}
-                        {activity.type === "followup" && <Phone className="w-5 h-5 text-purple-600" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground">{activity.student}</p>
-                        <p className="text-xs text-muted-foreground">{activity.course}</p>
-                      </div>
-                      <div className="text-right">
-                        {activity.amount > 0 && (
-                          <p className="text-sm font-semibold text-foreground">₹{activity.amount.toLocaleString()}</p>
-                        )}
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
-                      </div>
-                      <Badge 
-                        variant={activity.status === "completed" ? "success" : activity.status === "pending" ? "warning" : "pending"}
-                      >
-                        {activity.status}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Live Activity Feed */}
+            <LiveActivityFeed />
 
             {/* Top Courses */}
             <Card>

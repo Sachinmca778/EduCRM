@@ -41,6 +41,8 @@ export default function SmartNotification() {
     }
   ];
 
+
+  //For test purpose nofication (delete after making feature)
   useEffect(() => {
     // Show first notification immediately
     const firstNotification = notificationTypes[0];
