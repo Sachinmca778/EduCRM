@@ -307,7 +307,7 @@ export default function FeeTrackerWithSidebar() {
     { icon: <BarChart3 size={20} />, label: "Reports", active: false, href: "/finance" },
     { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/admin" },
     { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/admin" },
-    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/admin" },
+    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/scheduler" },
     { icon: <BookOpen size={20} />, label: "Students", href: "/dashboard/student" },
     { icon: <AlertTriangle size={20} />, label: "Fees", active: true, badge: "15", href: "/dashboard/fees" },
     { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
