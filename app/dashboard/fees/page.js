@@ -6,7 +6,7 @@ import {
   Users, BookOpen, CalendarClock, AlertTriangle, User, Settings, UserCircle2,
   ArrowLeft, ArrowRight, CheckCircle, XCircle, TrendingUp, DollarSign, CreditCard,
   GraduationCap, Clock, Star, Phone, MoreHorizontal, Eye, Edit, Download,
-  Share2, BarChart3, PieChart, Activity, Receipt, Send, Filter, Search
+  Share2, BarChart3, PieChart, Activity, Receipt, Send, Filter, Search, Bell, Trophy
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
@@ -76,10 +76,13 @@ function StatCard({ icon, title, value, change, changeType = "positive", classNa
   );
 }
 
-function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
+function SidebarItem({ icon, label, active, collapsed, badge, href, onClick }) {
+  const Component = href ? 'a' : 'button';
+  const props = href ? { href } : { onClick };
+  
   return (
-    <button
-      onClick={onClick}
+    <Component
+      {...props}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative ${
         active 
           ? "bg-primary text-primary-foreground shadow-sm" 
@@ -100,7 +103,7 @@ function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
       {collapsed && badge && (
         <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
       )}
-    </button>
+    </Component>
   );
 }
 
@@ -143,7 +146,10 @@ const pendingDues = [
     amount: 25000, 
     status: "pending",
     phone: "+91 98765 43210",
-    email: "ananya@email.com"
+    email: "ananya@email.com",
+    installment: "2/4",
+    lateFee: 0,
+    totalDue: 25000
   },
   { 
     id: 2,
@@ -153,7 +159,10 @@ const pendingDues = [
     amount: 30000, 
     status: "overdue",
     phone: "+91 98765 43211",
-    email: "siddharth@email.com"
+    email: "siddharth@email.com",
+    installment: "3/4",
+    lateFee: 1500,
+    totalDue: 31500
   },
   { 
     id: 3,
@@ -163,7 +172,10 @@ const pendingDues = [
     amount: 18000, 
     status: "pending",
     phone: "+91 98765 43212",
-    email: "priya@email.com"
+    email: "priya@email.com",
+    installment: "1/3",
+    lateFee: 0,
+    totalDue: 18000
   },
   { 
     id: 4,
@@ -173,8 +185,76 @@ const pendingDues = [
     amount: 22000, 
     status: "overdue",
     phone: "+91 98765 43213",
-    email: "rahul@email.com"
+    email: "rahul@email.com",
+    installment: "2/3",
+    lateFee: 2200,
+    totalDue: 24200
   },
+];
+
+// Enhanced fee structures
+const feeStructures = [
+  {
+    id: 1,
+    course: "JEE Advanced",
+    totalFee: 85000,
+    installments: 4,
+    discount: "10%",
+    installmentAmount: 21250,
+    dueDates: ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"],
+    lateFee: "₹500/month",
+    refundPolicy: "50% refund within 30 days"
+  },
+  {
+    id: 2,
+    course: "NEET",
+    totalFee: 75000,
+    installments: 4,
+    discount: "5%",
+    installmentAmount: 18750,
+    dueDates: ["2024-02-01", "2024-05-01", "2024-08-01", "2024-11-01"],
+    lateFee: "₹400/month",
+    refundPolicy: "30% refund within 15 days"
+  },
+  {
+    id: 3,
+    course: "CAT",
+    totalFee: 65000,
+    installments: 3,
+    discount: "15%",
+    installmentAmount: 21667,
+    dueDates: ["2024-03-01", "2024-06-01", "2024-09-01"],
+    lateFee: "₹300/month",
+    refundPolicy: "25% refund within 20 days"
+  }
+];
+
+// Invoice templates
+const invoiceTemplates = [
+  {
+    id: 1,
+    name: "Standard Invoice",
+    template: "default",
+    logo: true,
+    terms: true,
+    signature: false
+  },
+  {
+    id: 2,
+    name: "Professional Invoice",
+    template: "premium",
+    logo: true,
+    terms: true,
+    signature: true
+  },
+  {
+    id: 3,
+    name: "Simple Invoice",
+    template: "minimal",
+    logo: false,
+    terms: false,
+    signature: false
+  }
 ];
 
 const recentPayments = [
@@ -220,15 +300,22 @@ export default function FeeTrackerWithSidebar() {
   ];
 
   const navigationItems = [
-    { icon: <Home size={20} />, label: "Dashboard", active: false },
-    { icon: <Users size={20} />, label: "Leads", badge: "24" },
-    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12" },
-    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8" },
-    { icon: <BookOpen size={20} />, label: "Students" },
-    { icon: <AlertTriangle size={20} />, label: "Fees", active: true, badge: "15" },
-    { icon: <User size={20} />, label: "Notifications", badge: "3" },
-    { icon: <UserCircle2 size={20} />, label: "Branches" },
-    { icon: <Settings size={20} />, label: "Settings" },
+    { icon: <Home size={20} />, label: "Dashboard", active: false, href: "/dashboard" },
+    { icon: <DollarSign size={20} />, label: "Fees", active: true, href: "/dashboard/fees" },
+    { icon: <Receipt size={20} />, label: "Invoices", active: false, href: "/finance" },
+    { icon: <CreditCard size={20} />, label: "Payments", active: false, href: "/finance" },
+    { icon: <BarChart3 size={20} />, label: "Reports", active: false, href: "/finance" },
+    { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/admin" },
+    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/admin" },
+    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/admin" },
+    { icon: <BookOpen size={20} />, label: "Students", href: "/dashboard/student" },
+    { icon: <AlertTriangle size={20} />, label: "Fees", active: true, badge: "15", href: "/dashboard/fees" },
+    { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
+    { icon: <Trophy size={20} />, label: "Gamification", badge: "NEW", href: "/gamification" },
+    { icon: <BookOpen size={20} />, label: "Courses", badge: "4", href: "/courses" },
+    { icon: <DollarSign size={20} />, label: "Finance", badge: "NEW", href: "/finance" },
+    { icon: <UserCircle2 size={20} />, label: "Branches", href: "/admin" },
+    { icon: <Settings size={20} />, label: "Settings", href: "/admin" },
   ];
 
   const getStatusBadge = (status) => {
@@ -296,6 +383,7 @@ export default function FeeTrackerWithSidebar() {
               active={item.active}
               collapsed={sidebarCollapsed}
               badge={item.badge}
+              href={item.href}
             />
           ))}
         </nav>
@@ -358,243 +446,423 @@ export default function FeeTrackerWithSidebar() {
         </header>
 
         <div className="p-6 space-y-6">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <StatCard
-                key={index}
-                title={stat.title}
-                value={stat.value}
-                change={stat.change}
-                changeType={stat.changeType}
-                icon={stat.icon}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              />
-            ))}
+          {/* Tabs */}
+          <div className="bg-card border border-border rounded-xl">
+            <div className="flex border-b border-border">
+              {[
+                { id: "overview", label: "📊 Overview", icon: BarChart3 },
+                { id: "structures", label: "💰 Fee Structures", icon: DollarSign },
+                { id: "invoices", label: "📄 Invoices", icon: Receipt },
+                { id: "reports", label: "📈 Reports", icon: TrendingUp }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
+                    activeTab === tab.id
+                      ? "text-primary border-b-2 border-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="p-6">
+              {activeTab === "overview" && (
+                <div className="space-y-6">
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {stats.map((stat, index) => (
+                      <StatCard
+                        key={index}
+                        title={stat.title}
+                        value={stat.value}
+                        change={stat.change}
+                        changeType={stat.changeType}
+                        icon={stat.icon}
+                        className="animate-fade-in"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Charts Section */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Fee Collection Trends */}
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-semibold text-foreground">Fee Collection Trends</h3>
+                            <p className="text-sm text-muted-foreground">Monthly collection overview</p>
+                          </div>
+                          <TrendingUp className="w-5 h-5 text-primary" />
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-80">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={feeCollectionData}>
+                              <defs>
+                                <linearGradient id="colorCollected" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                                </linearGradient>
+                                <linearGradient id="colorPending" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                                </linearGradient>
+                                <linearGradient id="colorOverdue" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                                </linearGradient>
+                              </defs>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                              <XAxis dataKey="month" stroke="#64748b" />
+                              <YAxis stroke="#64748b" />
+                              <Tooltip 
+                                contentStyle={{
+                                  backgroundColor: 'var(--card)',
+                                  border: '1px solid var(--border)',
+                                  borderRadius: '8px',
+                                }}
+                              />
+                              <Area 
+                                type="monotone" 
+                                dataKey="collected" 
+                                stroke="#10b981" 
+                                strokeWidth={3}
+                                fill="url(#colorCollected)"
+                                name="Collected"
+                              />
+                              <Area 
+                                type="monotone" 
+                                dataKey="pending" 
+                                stroke="#f59e0b" 
+                                strokeWidth={2}
+                                fill="url(#colorPending)"
+                                name="Pending"
+                              />
+                              <Area 
+                                type="monotone" 
+                                dataKey="overdue" 
+                                stroke="#ef4444" 
+                                strokeWidth={2}
+                                fill="url(#colorOverdue)"
+                                name="Overdue"
+                              />
+                            </AreaChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Payment Methods */}
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-semibold text-foreground">Payment Methods</h3>
+                            <p className="text-sm text-muted-foreground">Revenue by payment gateway</p>
+                          </div>
+                          <CreditCard className="w-5 h-5 text-primary" />
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          {paymentMethods.map((method, index) => (
+                            <div key={index} className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div 
+                                  className="w-3 h-3 rounded-full" 
+                                  style={{ backgroundColor: method.color }}
+                                />
+                                <span className="text-sm font-medium text-foreground">{method.method}</span>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm font-semibold text-foreground">₹{method.amount.toLocaleString()}</p>
+                                <p className="text-xs text-muted-foreground">{method.percentage}%</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Pending Dues */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-semibold text-foreground">Pending & Overdue Dues</h3>
+                          <p className="text-sm text-muted-foreground">Students with outstanding payments</p>
+                        </div>
+                        <button className="text-sm text-primary hover:underline">View all</button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {pendingDues.map((due) => (
+                          <div key={due.id} className="flex items-center gap-4 p-4 rounded-lg border border-border hover:bg-accent transition-colors">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="text-sm font-medium text-foreground">{due.student}</p>
+                                {getStatusBadge(due.status)}
+                              </div>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <BookOpen className="w-3 h-3" />
+                                  {due.course}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Phone className="w-3 h-3" />
+                                  {due.phone}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Mail className="w-3 h-3" />
+                                  {due.email}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  Due: {due.dueDate}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-lg font-bold text-foreground">₹{due.amount.toLocaleString()}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => simulatePayment(due.student, due.amount)}
+                                className="p-2 rounded-lg hover:bg-background transition-colors"
+                                title="Track Payment"
+                              >
+                                <CreditCard className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                              <button 
+                                onClick={() => generateReceipt(due.student, due.amount)}
+                                className="p-2 rounded-lg hover:bg-background transition-colors"
+                                title="Generate Receipt"
+                              >
+                                <Receipt className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                              <button 
+                                onClick={() => sendReminder(due.student, "Email")}
+                                className="p-2 rounded-lg hover:bg-background transition-colors"
+                                title="Send Email Reminder"
+                              >
+                                <Mail className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                              <button 
+                                onClick={() => sendReminder(due.student, "WhatsApp")}
+                                className="p-2 rounded-lg hover:bg-background transition-colors"
+                                title="Send WhatsApp Reminder"
+                              >
+                                <MessageCircle className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Recent Payments */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-semibold text-foreground">Recent Payments</h3>
+                          <p className="text-sm text-muted-foreground">Latest successful transactions</p>
+                        </div>
+                        <button className="text-sm text-primary hover:underline">View all</button>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {recentPayments.map((payment) => (
+                          <div key={payment.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-accent transition-colors">
+                            <div className="flex-shrink-0">
+                              {getPaymentMethodIcon(payment.method)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground">{payment.student}</p>
+                              <p className="text-xs text-muted-foreground">{payment.method} • {payment.date}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-semibold text-foreground">₹{payment.amount.toLocaleString()}</p>
+                              {getStatusBadge(payment.status)}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button className="p-2 rounded-lg hover:bg-background transition-colors">
+                                <Download className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                              <button className="p-2 rounded-lg hover:bg-background transition-colors">
+                                <Share2 className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {activeTab === "structures" && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-foreground">Fee Structures</h3>
+                    <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                      <PlusCircle className="w-4 h-4 mr-2" />
+                      Add New Structure
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {feeStructures.map((structure) => (
+                      <Card key={structure.id}>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-lg font-semibold text-foreground">{structure.course}</h4>
+                              <Badge variant="primary">{structure.discount} off</Badge>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-muted-foreground">Total Fee:</span>
+                                <span className="text-sm font-medium text-foreground">₹{structure.totalFee.toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-muted-foreground">Installments:</span>
+                                <span className="text-sm font-medium text-foreground">{structure.installments}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-muted-foreground">Per Installment:</span>
+                                <span className="text-sm font-medium text-foreground">₹{structure.installmentAmount.toLocaleString()}</span>
+                              </div>
+                            </div>
+                            <div className="pt-2 border-t border-border">
+                              <p className="text-xs text-muted-foreground">Late Fee: {structure.lateFee}</p>
+                              <p className="text-xs text-muted-foreground">Refund: {structure.refundPolicy}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "invoices" && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-foreground">Invoice Templates</h3>
+                    <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                      <PlusCircle className="w-4 h-4 mr-2" />
+                      Create Template
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {invoiceTemplates.map((template) => (
+                      <Card key={template.id}>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-lg font-semibold text-foreground">{template.name}</h4>
+                              <Badge variant="default">{template.template}</Badge>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                                <span className="text-sm text-foreground">Logo: {template.logo ? 'Yes' : 'No'}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                                <span className="text-sm text-foreground">Terms: {template.terms ? 'Yes' : 'No'}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                                <span className="text-sm text-foreground">Signature: {template.signature ? 'Yes' : 'No'}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "reports" && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-foreground">Financial Reports</h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <h4 className="text-lg font-semibold text-foreground">Revenue Analytics</h4>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-80">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={feeCollectionData}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                              <XAxis dataKey="month" stroke="#64748b" />
+                              <YAxis stroke="#64748b" />
+                              <Tooltip 
+                                contentStyle={{
+                                  backgroundColor: 'var(--card)',
+                                  border: '1px solid var(--border)',
+                                  borderRadius: '8px',
+                                }}
+                              />
+                              <Bar dataKey="collected" fill="#10b981" name="Collected" />
+                              <Bar dataKey="pending" fill="#f59e0b" name="Pending" />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader>
+                        <h4 className="text-lg font-semibold text-foreground">Payment Methods Distribution</h4>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-80">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <RechartsPieChart>
+                              <Pie
+                                data={paymentMethods}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={80}
+                                dataKey="amount"
+                                nameKey="method"
+                              >
+                                {paymentMethods.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                              </Pie>
+                              <Tooltip 
+                                contentStyle={{
+                                  backgroundColor: 'var(--card)',
+                                  border: '1px solid var(--border)',
+                                  borderRadius: '8px',
+                                }}
+                              />
+                            </RechartsPieChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Fee Collection Trends */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">Fee Collection Trends</h3>
-                    <p className="text-sm text-muted-foreground">Monthly collection overview</p>
-                  </div>
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={feeCollectionData}>
-                      <defs>
-                        <linearGradient id="colorCollected" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                        </linearGradient>
-                        <linearGradient id="colorPending" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
-                        </linearGradient>
-                        <linearGradient id="colorOverdue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                      <XAxis dataKey="month" stroke="#64748b" />
-                      <YAxis stroke="#64748b" />
-                      <Tooltip 
-                        contentStyle={{
-                          backgroundColor: 'var(--card)',
-                          border: '1px solid var(--border)',
-                          borderRadius: '8px',
-                        }}
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="collected" 
-                        stroke="#10b981" 
-                        strokeWidth={3}
-                        fill="url(#colorCollected)"
-                        name="Collected"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="pending" 
-                        stroke="#f59e0b" 
-                        strokeWidth={2}
-                        fill="url(#colorPending)"
-                        name="Pending"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="overdue" 
-                        stroke="#ef4444" 
-                        strokeWidth={2}
-                        fill="url(#colorOverdue)"
-                        name="Overdue"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Payment Methods */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">Payment Methods</h3>
-                    <p className="text-sm text-muted-foreground">Revenue by payment gateway</p>
-                  </div>
-                  <CreditCard className="w-5 h-5 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {paymentMethods.map((method, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: method.color }}
-                        />
-                        <span className="text-sm font-medium text-foreground">{method.method}</span>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold text-foreground">₹{method.amount.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">{method.percentage}%</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Pending Dues */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">Pending & Overdue Dues</h3>
-                  <p className="text-sm text-muted-foreground">Students with outstanding payments</p>
-                </div>
-                <button className="text-sm text-primary hover:underline">View all</button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {pendingDues.map((due) => (
-                  <div key={due.id} className="flex items-center gap-4 p-4 rounded-lg border border-border hover:bg-accent transition-colors">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="text-sm font-medium text-foreground">{due.student}</p>
-                        {getStatusBadge(due.status)}
-                      </div>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <BookOpen className="w-3 h-3" />
-                          {due.course}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Phone className="w-3 h-3" />
-                          {due.phone}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
-                          {due.email}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          Due: {due.dueDate}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-foreground">₹{due.amount.toLocaleString()}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={() => simulatePayment(due.student, due.amount)}
-                        className="p-2 rounded-lg hover:bg-background transition-colors"
-                        title="Track Payment"
-                      >
-                        <CreditCard className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                      <button 
-                        onClick={() => generateReceipt(due.student, due.amount)}
-                        className="p-2 rounded-lg hover:bg-background transition-colors"
-                        title="Generate Receipt"
-                      >
-                        <Receipt className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                      <button 
-                        onClick={() => sendReminder(due.student, "Email")}
-                        className="p-2 rounded-lg hover:bg-background transition-colors"
-                        title="Send Email Reminder"
-                      >
-                        <Mail className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                      <button 
-                        onClick={() => sendReminder(due.student, "WhatsApp")}
-                        className="p-2 rounded-lg hover:bg-background transition-colors"
-                        title="Send WhatsApp Reminder"
-                      >
-                        <MessageCircle className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent Payments */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">Recent Payments</h3>
-                  <p className="text-sm text-muted-foreground">Latest successful transactions</p>
-                </div>
-                <button className="text-sm text-primary hover:underline">View all</button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentPayments.map((payment) => (
-                  <div key={payment.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-accent transition-colors">
-                    <div className="flex-shrink-0">
-                      {getPaymentMethodIcon(payment.method)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">{payment.student}</p>
-                      <p className="text-xs text-muted-foreground">{payment.method} • {payment.date}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold text-foreground">₹{payment.amount.toLocaleString()}</p>
-                      {getStatusBadge(payment.status)}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="p-2 rounded-lg hover:bg-background transition-colors">
-                        <Download className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                      <button className="p-2 rounded-lg hover:bg-background transition-colors">
-                        <Share2 className="w-4 h-4 text-muted-foreground" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
     </div>
