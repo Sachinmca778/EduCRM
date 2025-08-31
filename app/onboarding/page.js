@@ -419,8 +419,8 @@ export default function Onboarding({ type = "student" }) {
 
   const navigationItems = [
     { icon: <Home size={20} />, label: "Dashboard", active: false, href: "/dashboard" },
-    { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/admin" },
-    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/admin" },
+    { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/leads" },
+    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/followups" },
     { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/scheduler" },
     { icon: <BookOpen size={20} />, label: "Students", href: "/dashboard/student" },
     { icon: <DollarSign size={20} />, label: "Fees", href: "/dashboard/fees" },
