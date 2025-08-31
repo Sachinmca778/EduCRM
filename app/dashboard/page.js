@@ -6,7 +6,7 @@ import {
   Home, User, Settings, UserCircle2, Menu, Search, Filter,
   Plus, ArrowUpRight, ArrowDownRight, TrendingUp, DollarSign,
   GraduationCap, Target, Activity, MoreHorizontal, Eye, Edit, Trash2,
-  Phone, Mail, MapPin, Clock, Star, CheckCircle, XCircle
+  Phone, Mail, MapPin, Clock, Star, CheckCircle, XCircle,Trophy
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
