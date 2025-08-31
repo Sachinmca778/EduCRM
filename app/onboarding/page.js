@@ -5,7 +5,7 @@ import {
   Home, Users, BellRing, CalendarClock, BookOpen, AlertTriangle, User,
   Settings, UserCircle2, Menu, ArrowLeft, ArrowRight, CheckCircle, 
   GraduationCap, FileText, CreditCard, Building, UserPlus, Clock,
-  Mail, Phone, MapPin, Upload, Eye, EyeOff, ChevronDown
+  Mail, Phone, MapPin, Upload, Eye, EyeOff, ChevronDown, DollarSign, Bell, Trophy
 } from "lucide-react";
 
 // Enhanced Components
@@ -36,9 +36,13 @@ function Badge({ variant = "default", children, className = "" }) {
   );
 }
 
-function SidebarItem({ icon, label, active, collapsed, badge }) {
+function SidebarItem({ icon, label, active, collapsed, badge, href, onClick }) {
+  const Component = href ? 'a' : 'button';
+  const props = href ? { href } : { onClick };
+  
   return (
-    <button
+    <Component
+      {...props}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative ${
         active 
           ? "bg-primary text-primary-foreground shadow-sm" 
@@ -59,7 +63,7 @@ function SidebarItem({ icon, label, active, collapsed, badge }) {
       {collapsed && badge && (
         <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
       )}
-    </button>
+    </Component>
   );
 }
 
@@ -414,15 +418,18 @@ export default function Onboarding({ type = "student" }) {
   };
 
   const navigationItems = [
-    { icon: <Home size={20} />, label: "Dashboard", active: false },
-    { icon: <Users size={20} />, label: "Leads", badge: "24" },
-    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12" },
-    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8" },
-    { icon: <BookOpen size={20} />, label: "Students" },
-    { icon: <AlertTriangle size={20} />, label: "Fees" },
-    { icon: <User size={20} />, label: "Notifications", badge: "3" },
-    { icon: <UserCircle2 size={20} />, label: "Branches" },
-    { icon: <Settings size={20} />, label: "Settings" },
+    { icon: <Home size={20} />, label: "Dashboard", active: false, href: "/dashboard" },
+    { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/admin" },
+    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/admin" },
+    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/scheduler" },
+    { icon: <BookOpen size={20} />, label: "Students", href: "/dashboard/student" },
+    { icon: <DollarSign size={20} />, label: "Fees", href: "/dashboard/fees" },
+    { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
+    { icon: <Trophy size={20} />, label: "Gamification", badge: "NEW", href: "/gamification" },
+    { icon: <BookOpen size={20} />, label: "Courses", badge: "4", href: "/courses" },
+    { icon: <DollarSign size={20} />, label: "Finance", badge: "NEW", href: "/finance" },
+    { icon: <UserCircle2 size={20} />, label: "Branches", href: "/admin" },
+    { icon: <Settings size={20} />, label: "Settings", href: "/admin" },
   ];
 
   return (
@@ -459,6 +466,7 @@ export default function Onboarding({ type = "student" }) {
               active={item.active}
               collapsed={sidebarCollapsed}
               badge={item.badge}
+              href={item.href}
             />
           ))}
         </nav>

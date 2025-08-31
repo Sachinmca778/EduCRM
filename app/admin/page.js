@@ -215,18 +215,18 @@ export default function AdminDashboard() {
   ];
 
   const navigationItems = [
-    { icon: <Home size={20} />, label: "Dashboard", active: true },
-    { icon: <Users size={20} />, label: "Leads", badge: "24" },
-    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12" },
-    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8" },
-    { icon: <BookOpen size={20} />, label: "Students" },
-    { icon: <AlertTriangle size={20} />, label: "Fees" },
+    { icon: <Home size={20} />, label: "Dashboard", active: true, href: "/admin" },
+    { icon: <Users size={20} />, label: "Leads", badge: "24", href: "/admin" },
+    { icon: <BellRing size={20} />, label: "Follow-ups", badge: "12", href: "/admin" },
+    { icon: <CalendarClock size={20} />, label: "Demo Classes", badge: "8", href: "/scheduler" },
+    { icon: <BookOpen size={20} />, label: "Students", href: "/dashboard/student" },
+    { icon: <DollarSign size={20} />, label: "Fees", href: "/dashboard/fees" },
     { icon: <Bell size={20} />, label: "Notifications", badge: "3", href: "/notifications" },
     { icon: <Trophy size={20} />, label: "Gamification", badge: "NEW", href: "/gamification" },
     { icon: <BookOpen size={20} />, label: "Courses", badge: "4", href: "/courses" },
     { icon: <DollarSign size={20} />, label: "Finance", badge: "NEW", href: "/finance" },
-    { icon: <UserCircle2 size={20} />, label: "Branches" },
-    { icon: <Settings size={20} />, label: "Settings" },
+    { icon: <UserCircle2 size={20} />, label: "Branches", href: "/admin" },
+    { icon: <Settings size={20} />, label: "Settings", href: "/admin" },
   ];
 
   return (

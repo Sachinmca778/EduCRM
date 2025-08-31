@@ -81,10 +81,13 @@ function StatCard({ icon, title, value, change, changeType = "positive", classNa
   );
 }
 
-function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
+function SidebarItem({ icon, label, active, collapsed, badge, href, onClick }) {
+  const Component = href ? 'a' : 'button';
+  const props = href ? { href } : { onClick };
+  
   return (
-    <button
-      onClick={onClick}
+    <Component
+      {...props}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative ${
         active 
           ? "bg-primary text-primary-foreground shadow-sm" 
@@ -105,7 +108,7 @@ function SidebarItem({ icon, label, active, collapsed, badge, onClick }) {
       {collapsed && badge && (
         <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
       )}
-    </button>
+    </Component>
   );
 }
 
@@ -484,13 +487,13 @@ export default function StudentDashboard() {
   ];
 
   const navigationItems = [
-    { icon: <Home size={20} />, label: "Dashboard", active: true },
-    { icon: <BookOpen size={20} />, label: "Courses", badge: "5" },
-    { icon: <FileText size={20} />, label: "Assignments", badge: "3" },
-    { icon: <CalendarClock size={20} />, label: "Schedule" },
-    { icon: <Bell size={20} />, label: "Notifications", badge: "2" },
-    { icon: <User size={20} />, label: "Profile" },
-    { icon: <Settings size={20} />, label: "Settings" },
+    { icon: <Home size={20} />, label: "Dashboard", active: true, href: "/dashboard/student" },
+    { icon: <BookOpen size={20} />, label: "Courses", badge: "5", href: "/courses" },
+    { icon: <FileText size={20} />, label: "Assignments", badge: "3", href: "/dashboard/student" },
+    { icon: <CalendarClock size={20} />, label: "Schedule", href: "/scheduler" },
+    { icon: <Bell size={20} />, label: "Notifications", badge: "2", href: "/notifications" },
+    { icon: <User size={20} />, label: "Profile", href: "/dashboard/student" },
+    { icon: <Settings size={20} />, label: "Settings", href: "/dashboard/student" },
   ];
 
   const getStatusBadge = (status) => {
@@ -553,6 +556,7 @@ export default function StudentDashboard() {
               active={item.active}
               collapsed={sidebarCollapsed}
               badge={item.badge}
+              href={item.href}
             />
           ))}
         </nav>
