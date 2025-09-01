@@ -1,0 +1,390 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { 
+  CreditCard, 
+  Plus, 
+  Search, 
+  Filter, 
+  DollarSign,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Download,
+  Send,
+  Phone,
+  Mail,
+  MessageSquare
+} from 'lucide-react';
+
+export default function PaymentsPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('all');
+
+  const payments = [
+    {
+      id: 1,
+      memberId: 'M001',
+      memberName: 'Rahul Sharma',
+      amount: 2499,
+      paymentMethod: 'UPI',
+      status: 'completed',
+      date: '2024-12-20',
+      dueDate: '2024-12-25',
+      membershipType: 'Premium',
+      transactionId: 'TXN123456789',
+      reminderSent: false
+    },
+    {
+      id: 2,
+      memberId: 'M002',
+      memberName: 'Priya Patel',
+      amount: 1499,
+      paymentMethod: 'Cash',
+      status: 'pending',
+      date: null,
+      dueDate: '2024-12-22',
+      membershipType: 'Standard',
+      transactionId: null,
+      reminderSent: true
+    },
+    {
+      id: 3,
+      memberId: 'M003',
+      memberName: 'Amit Kumar',
+      amount: 999,
+      paymentMethod: 'Card',
+      status: 'overdue',
+      date: null,
+      dueDate: '2024-12-18',
+      membershipType: 'Basic',
+      transactionId: null,
+      reminderSent: true
+    }
+  ];
+
+  const filteredPayments = payments.filter(payment => {
+    const matchesSearch = payment.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         payment.memberId.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
+    const matchesMethod = selectedPaymentMethod === 'all' || payment.paymentMethod === selectedPaymentMethod;
+    
+    return matchesSearch && matchesStatus && matchesMethod;
+  });
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-green-100 text-green-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'overdue': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPaymentMethodColor = (method: string) => {
+    switch (method) {
+      case 'UPI': return 'bg-purple-100 text-purple-800';
+      case 'Cash': return 'bg-green-100 text-green-800';
+      case 'Card': return 'bg-blue-100 text-blue-800';
+      case 'Online': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const totalRevenue = payments.filter(p => p.status === 'completed').reduce((sum, p) => sum + p.amount, 0);
+  const pendingAmount = payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + p.amount, 0);
+  const overdueAmount = payments.filter(p => p.status === 'overdue').reduce((sum, p) => sum + p.amount, 0);
+
+  return (
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Payments</h1>
+          <p className="mt-2 text-gray-600">Manage gym membership payments and fee collection</p>
+        </div>
+        <Link
+          href="/gym-crm/payments/new"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Record Payment
+        </Link>
+      </div>
+
+      {/* Payment Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <DollarSign className="h-8 w-8 text-green-500" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+              <p className="text-2xl font-semibold text-gray-900">₹{totalRevenue.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <Clock className="h-8 w-8 text-yellow-500" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-500">Pending Payments</p>
+              <p className="text-2xl font-semibold text-gray-900">₹{pendingAmount.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <AlertTriangle className="h-8 w-8 text-red-500" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-500">Overdue Amount</p>
+              <p className="text-2xl font-semibold text-gray-900">₹{overdueAmount.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <CheckCircle className="h-8 w-8 text-blue-500" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-500">Completed Today</p>
+              <p className="text-2xl font-semibold text-gray-900">₹{totalRevenue.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+            <Send className="h-8 w-8 text-blue-500 mb-2" />
+            <span className="text-sm font-medium text-gray-900">Send Reminders</span>
+            <span className="text-xs text-gray-500">WhatsApp, Email, SMS</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+            <Download className="h-8 w-8 text-green-500 mb-2" />
+            <span className="text-sm font-medium text-gray-900">Generate Receipts</span>
+            <span className="text-xs text-gray-500">PDF Downloads</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+            <AlertTriangle className="h-8 w-8 text-orange-500 mb-2" />
+            <span className="text-sm font-medium text-gray-900">Overdue Report</span>
+            <span className="text-xs text-gray-500">View all pending</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+            <DollarSign className="h-8 w-8 text-purple-500 mb-2" />
+            <span className="text-sm font-medium text-gray-900">Bulk Collection</span>
+            <span className="text-xs text-gray-500">Multiple payments</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search payments by member name or ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="overdue">Overdue</option>
+            </select>
+            <select
+              value={selectedPaymentMethod}
+              onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">All Methods</option>
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Online">Online</option>
+            </select>
+            <button className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+              <Filter className="h-4 w-4 mr-2" />
+              More Filters
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Payments List */}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-medium text-gray-900">
+            {filteredPayments.length} Payments
+          </h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Member
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Payment Method
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Due Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredPayments.map((payment) => (
+                <tr key={payment.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-8 w-8">
+                        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
+                          <span className="text-white text-xs font-medium">
+                            {payment.memberName.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">{payment.memberName}</div>
+                        <div className="text-sm text-gray-500">{payment.memberId} • {payment.membershipType}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">₹{payment.amount.toLocaleString()}</div>
+                    {payment.transactionId && (
+                      <div className="text-xs text-gray-500">TXN: {payment.transactionId}</div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPaymentMethodColor(payment.paymentMethod)}`}>
+                      {payment.paymentMethod}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(payment.status)}`}>
+                      {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{payment.dueDate}</div>
+                    {payment.status === 'overdue' && (
+                      <div className="text-xs text-red-600 font-medium">
+                        {Math.ceil((new Date().getTime() - new Date(payment.dueDate).getTime()) / (1000 * 60 * 60 * 24))} days overdue
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2">
+                      {payment.status === 'completed' && (
+                        <button className="text-green-600 hover:text-green-900">
+                          <Download className="h-4 w-4" />
+                        </button>
+                      )}
+                      {payment.status === 'pending' && (
+                        <button className="text-blue-600 hover:text-blue-900">
+                          Mark Paid
+                        </button>
+                      )}
+                      {payment.status === 'overdue' && (
+                        <div className="flex space-x-1">
+                          <button className="text-orange-600 hover:text-orange-900" title="Send WhatsApp">
+                            <Phone className="h-4 w-4" />
+                          </button>
+                          <button className="text-blue-600 hover:text-blue-900" title="Send Email">
+                            <Mail className="h-4 w-4" />
+                          </button>
+                          <button className="text-green-600 hover:text-green-900" title="Send SMS">
+                            <MessageSquare className="h-4 w-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Payment Reminders */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-medium text-gray-900">Payment Reminders</h3>
+        </div>
+        <div className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-yellow-400" />
+                <div>
+                  <p className="text-sm font-medium text-yellow-800">15 payments due in next 7 days</p>
+                  <p className="text-sm text-yellow-600">Total amount: ₹22,450</p>
+                </div>
+              </div>
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700">
+                <Send className="h-4 w-4 mr-2" />
+                Send Reminders
+              </button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-red-400" />
+                <div>
+                  <p className="text-sm font-medium text-red-800">8 payments overdue</p>
+                  <p className="text-sm text-red-600">Total amount: ₹12,800</p>
+                </div>
+              </div>
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">
+                <Send className="h-4 w-4 mr-2" />
+                Send Urgent Reminders
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

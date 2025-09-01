@@ -88,6 +88,22 @@ export default function LandingPage() {
               <a href="#pricing" className="text-foreground hover:text-primary transition-colors">Pricing</a>
               <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">Testimonials</a>
               <a href="#contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
+              <div className="relative group">
+                <button className="flex items-center gap-1 text-foreground hover:text-primary transition-colors">
+                  Solutions
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="py-2">
+                    <Link href="/admin" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
+                      Education CRM
+                    </Link>
+                    <Link href="/gym-crm" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
+                      🏋️ Gym CRM
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div className="hidden md:flex items-center gap-4">
@@ -124,6 +140,15 @@ export default function LandingPage() {
               <a href="#testimonials" className="block text-foreground hover:text-primary transition-colors">Testimonials</a>
               <a href="#contact" className="block text-foreground hover:text-primary transition-colors">Contact</a>
               <div className="pt-4 space-y-2">
+                <div className="border-t border-border pt-4">
+                  <p className="text-sm font-medium text-muted-foreground mb-2">Solutions</p>
+                  <Link href="/admin" className="block text-foreground hover:text-primary transition-colors mb-2">
+                    Education CRM
+                  </Link>
+                  <Link href="/gym-crm" className="block text-foreground hover:text-primary transition-colors">
+                    🏋️ Gym CRM
+                  </Link>
+                </div>
                 <Link 
                   href="/login" 
                   className="block text-foreground hover:text-primary transition-colors"
