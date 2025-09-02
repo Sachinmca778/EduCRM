@@ -79,16 +79,16 @@ export default function MembersPage() {
       case 'active': return 'bg-green-100 text-green-800';
       case 'expired': return 'bg-red-100 text-red-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getMembershipTypeColor = (type: string) => {
     switch (type) {
       case 'Premium': return 'bg-purple-100 text-purple-800';
-      case 'Basic': return 'bg-blue-100 text-blue-800';
+      case 'Basic': return 'bg-primary/10 text-primary';
       case 'Standard': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -97,12 +97,12 @@ export default function MembersPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Members</h1>
-          <p className="mt-2 text-gray-600">Manage your gym members and their information</p>
+          <h1 className="text-3xl font-bold text-foreground">Members</h1>
+          <p className="mt-2 text-muted-foreground">Manage your gym members and their information</p>
         </div>
         <Link
           href="/gym-crm/members/new"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Member
@@ -110,17 +110,17 @@ export default function MembersPage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search members by name, email, or phone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full pl-10 pr-3 py-2 border border-border rounded-lg leading-5 bg-background placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
             </div>
           </div>
@@ -128,14 +128,14 @@ export default function MembersPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground transition-colors"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
               <option value="expired">Expired</option>
               <option value="pending">Pending</option>
             </select>
-            <button className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button className="inline-flex items-center px-3 py-2 border border-border rounded-lg text-sm font-medium text-foreground bg-background hover:bg-accent transition-colors">
               <Filter className="h-4 w-4 mr-2" />
               More Filters
             </button>
@@ -144,66 +144,66 @@ export default function MembersPage() {
       </div>
 
       {/* Members List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">
             {filteredMembers.length} Members
           </h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Member
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Contact
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Membership
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Last Visit
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Dues
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-border">
               {filteredMembers.map((member) => (
-                <tr key={member.id} className="hover:bg-gray-50">
+                <tr key={member.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10">
-                        <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-white font-medium text-sm">
+                        <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-primary-foreground font-medium text-sm">
                             {member.name.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{member.name}</div>
-                        <div className="text-sm text-gray-500">ID: {member.id}</div>
+                        <div className="text-sm font-medium text-foreground">{member.name}</div>
+                        <div className="text-sm text-muted-foreground">ID: {member.id}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{member.phone}</div>
-                    <div className="text-sm text-gray-500">{member.email}</div>
+                    <div className="text-sm text-foreground">{member.phone}</div>
+                    <div className="text-sm text-muted-foreground">{member.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMembershipTypeColor(member.membershipType)}`}>
                       {member.membershipType}
                     </span>
-                    <div className="text-sm text-gray-500 mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       Expires: {member.expiryDate}
                     </div>
                   </td>
@@ -212,7 +212,7 @@ export default function MembersPage() {
                       {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {member.lastVisit}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -229,17 +229,17 @@ export default function MembersPage() {
                     <div className="flex items-center space-x-2">
                       <Link
                         href={`/gym-crm/members/${member.id}`}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-primary hover:text-primary/80 transition-colors"
                       >
                         View
                       </Link>
                       <Link
                         href={`/gym-crm/members/${member.id}/edit`}
-                        className="text-indigo-600 hover:text-indigo-900"
+                        className="text-indigo-600 hover:text-indigo-800 transition-colors"
                       >
                         Edit
                       </Link>
-                      <button className="text-gray-400 hover:text-gray-600">
+                      <button className="text-muted-foreground hover:text-foreground transition-colors">
                         <MoreVertical className="h-4 w-4" />
                       </button>
                     </div>

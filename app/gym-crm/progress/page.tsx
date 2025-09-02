@@ -116,27 +116,27 @@ export default function ProgressPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Progress Tracking</h1>
-          <p className="mt-2 text-gray-600">Track member fitness progress, measurements, and goals</p>
+          <h1 className="text-3xl font-bold text-foreground">Progress Tracking</h1>
+          <p className="mt-2 text-muted-foreground">Track member fitness progress, measurements, and goals</p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+        <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
           <Plus className="h-4 w-4 mr-2" />
           Add Progress Entry
         </button>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search members by name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full pl-10 pr-3 py-2 border border-border rounded-lg leading-5 bg-background placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function ProgressPage() {
             <select
               value={selectedMember}
               onChange={(e) => setSelectedMember(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground transition-colors"
             >
               <option value="all">All Members</option>
               {members.map(member => (
@@ -154,7 +154,7 @@ export default function ProgressPage() {
             <select
               value={selectedMetric}
               onChange={(e) => setSelectedMetric(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground transition-colors"
             >
               <option value="weight">Weight</option>
               <option value="bmi">BMI</option>
@@ -169,29 +169,29 @@ export default function ProgressPage() {
       {selectedMemberData && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Weight Progress */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Weight Progress</h3>
-              <Weight className="h-6 w-6 text-blue-500" />
+              <h3 className="text-lg font-medium text-foreground">Weight Progress</h3>
+              <Weight className="h-6 w-6 text-primary" />
             </div>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Current Weight</span>
-                <span className="text-lg font-semibold text-gray-900">{selectedMemberData.currentWeight} kg</span>
+                <span className="text-sm text-muted-foreground">Current Weight</span>
+                <span className="text-lg font-semibold text-foreground">{selectedMemberData.currentWeight} kg</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Target Weight</span>
-                <span className="text-lg font-semibold text-gray-900">{selectedMemberData.targetWeight} kg</span>
+                <span className="text-sm text-muted-foreground">Target Weight</span>
+                <span className="text-lg font-semibold text-foreground">{selectedMemberData.targetWeight} kg</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Progress</span>
-                <span className="text-sm font-medium text-blue-600">
+                <span className="text-sm text-muted-foreground">Progress</span>
+                <span className="text-sm font-medium text-primary">
                   {getProgressPercentage(selectedMemberData.currentWeight, selectedMemberData.targetWeight, selectedMemberData.progress[0].weight).toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div 
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${getProgressPercentage(selectedMemberData.currentWeight, selectedMemberData.targetWeight, selectedMemberData.progress[0].weight)}%` }}
                 ></div>
               </div>
@@ -199,63 +199,63 @@ export default function ProgressPage() {
           </div>
 
           {/* BMI & Body Composition */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Body Composition</h3>
+              <h3 className="text-lg font-medium text-foreground">Body Composition</h3>
               <Activity className="h-6 w-6 text-green-500" />
             </div>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">BMI</span>
+                <span className="text-sm text-muted-foreground">BMI</span>
                 <div className="text-right">
-                  <span className="text-lg font-semibold text-gray-900">{selectedMemberData.bmi}</span>
+                  <span className="text-lg font-semibold text-foreground">{selectedMemberData.bmi}</span>
                   <span className={`ml-2 text-sm font-medium ${getBMICategory(selectedMemberData.bmi).color}`}>
                     ({getBMICategory(selectedMemberData.bmi).category})
                   </span>
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Body Fat</span>
+                <span className="text-sm text-muted-foreground">Body Fat</span>
                 <div className="text-right">
-                  <span className="text-lg font-semibold text-gray-900">{selectedMemberData.bodyFat}%</span>
+                  <span className="text-lg font-semibold text-foreground">{selectedMemberData.bodyFat}%</span>
                   <span className={`ml-2 text-sm font-medium ${getBodyFatCategory(selectedMemberData.bodyFat).color}`}>
                     ({getBodyFatCategory(selectedMemberData.bodyFat).category})
                   </span>
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Muscle Mass</span>
-                <span className="text-lg font-semibold text-gray-900">{selectedMemberData.muscleMass} kg</span>
+                <span className="text-sm text-muted-foreground">Muscle Mass</span>
+                <span className="text-lg font-semibold text-foreground">{selectedMemberData.muscleMass} kg</span>
               </div>
             </div>
           </div>
 
           {/* Measurements */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Body Measurements</h3>
+              <h3 className="text-lg font-medium text-foreground">Body Measurements</h3>
               <Ruler className="h-6 w-6 text-purple-500" />
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Chest</span>
-                <span className="text-sm font-medium text-gray-900">{selectedMemberData.measurements.chest} cm</span>
+                <span className="text-sm text-muted-foreground">Chest</span>
+                <span className="text-sm font-medium text-foreground">{selectedMemberData.measurements.chest} cm</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Waist</span>
-                <span className="text-sm font-medium text-gray-900">{selectedMemberData.measurements.waist} cm</span>
+                <span className="text-sm text-muted-foreground">Waist</span>
+                <span className="text-sm font-medium text-foreground">{selectedMemberData.measurements.waist} cm</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Hips</span>
-                <span className="text-sm font-medium text-gray-900">{selectedMemberData.measurements.hips} cm</span>
+                <span className="text-sm text-muted-foreground">Hips</span>
+                <span className="text-sm font-medium text-foreground">{selectedMemberData.measurements.hips} cm</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Biceps</span>
-                <span className="text-sm font-medium text-gray-900">{selectedMemberData.measurements.biceps} cm</span>
+                <span className="text-sm text-muted-foreground">Biceps</span>
+                <span className="text-sm font-medium text-foreground">{selectedMemberData.measurements.biceps} cm</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Thighs</span>
-                <span className="text-sm font-medium text-gray-900">{selectedMemberData.measurements.thighs} cm</span>
+                <span className="text-sm text-muted-foreground">Thighs</span>
+                <span className="text-sm font-medium text-foreground">{selectedMemberData.measurements.thighs} cm</span>
               </div>
             </div>
           </div>
@@ -264,33 +264,33 @@ export default function ProgressPage() {
 
       {/* Progress Chart */}
       {selectedMemberData && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-medium text-gray-900">Progress Over Time</h3>
+            <h3 className="text-lg font-medium text-foreground">Progress Over Time</h3>
             <div className="flex items-center space-x-2">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Download className="h-4 w-4" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Share2 className="h-4 w-4" />
               </button>
             </div>
           </div>
           
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+          <div className="h-64 bg-muted/50 rounded-lg flex items-center justify-center">
             <div className="text-center">
-              <BarChart3 className="mx-auto h-12 w-12 text-gray-400" />
-              <p className="mt-2 text-sm text-gray-500">Progress Chart</p>
-              <p className="text-xs text-gray-400">Chart visualization would go here</p>
+              <BarChart3 className="mx-auto h-12 w-12 text-muted-foreground" />
+              <p className="mt-2 text-sm text-muted-foreground">Progress Chart</p>
+              <p className="text-xs text-muted-foreground">Chart visualization would go here</p>
             </div>
           </div>
           
           <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-4">
             {selectedMemberData.progress.map((entry, index) => (
-              <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
-                <div className="text-sm font-medium text-gray-900">{entry.weight} kg</div>
-                <div className="text-xs text-gray-500">{new Date(entry.date).toLocaleDateString()}</div>
-                <div className="text-xs text-gray-400">BMI: {entry.bmi}</div>
+              <div key={index} className="text-center p-3 bg-muted/50 rounded-lg">
+                <div className="text-sm font-medium text-foreground">{entry.weight} kg</div>
+                <div className="text-xs text-muted-foreground">{new Date(entry.date).toLocaleDateString()}</div>
+                <div className="text-xs text-muted-foreground">BMI: {entry.bmi}</div>
               </div>
             ))}
           </div>
@@ -298,87 +298,87 @@ export default function ProgressPage() {
       )}
 
       {/* Members Progress List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">All Members Progress</h3>
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">All Members Progress</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Member
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Start Weight
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Current Weight
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Target Weight
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Progress
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   BMI
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-border">
               {filteredMembers.map((member) => (
-                <tr key={member.id} className="hover:bg-gray-50">
+                <tr key={member.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-8 w-8">
-                        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">
+                        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-primary-foreground text-xs font-medium">
                             {member.name.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{member.name}</div>
-                        <div className="text-sm text-gray-500">{member.membershipType}</div>
+                        <div className="text-sm font-medium text-foreground">{member.name}</div>
+                        <div className="text-sm text-muted-foreground">{member.membershipType}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {member.progress[0].weight} kg
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {member.currentWeight} kg
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {member.targetWeight} kg
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                      <div className="w-16 bg-muted rounded-full h-2 mr-2">
                         <div 
-                          className="bg-blue-600 h-2 rounded-full"
+                          className="bg-primary h-2 rounded-full"
                           style={{ width: `${getProgressPercentage(member.currentWeight, member.targetWeight, member.progress[0].weight)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm text-gray-900">
+                      <span className="text-sm text-foreground">
                         {getProgressPercentage(member.currentWeight, member.targetWeight, member.progress[0].weight).toFixed(0)}%
                       </span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{member.bmi}</div>
+                    <div className="text-sm text-foreground">{member.bmi}</div>
                     <div className={`text-xs ${getBMICategory(member.bmi).color}`}>
                       {getBMICategory(member.bmi).category}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">View Details</button>
-                      <button className="text-indigo-600 hover:text-indigo-900">Add Entry</button>
+                      <button className="text-primary hover:text-primary/80 transition-colors">View Details</button>
+                      <button className="text-indigo-600 hover:text-indigo-800 transition-colors">Add Entry</button>
                     </div>
                   </td>
                 </tr>
@@ -389,31 +389,31 @@ export default function ProgressPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+      <div className="bg-card rounded-xl border border-border p-6">
+        <h3 className="text-lg font-medium text-foreground mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
-            <Plus className="h-8 w-8 text-blue-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Add Progress</span>
-            <span className="text-xs text-gray-500">New entry</span>
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
+            <Plus className="h-8 w-8 text-primary mb-2" />
+            <span className="text-sm font-medium text-foreground">Add Progress</span>
+            <span className="text-xs text-muted-foreground">New entry</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <Target className="h-8 w-8 text-green-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Set Goals</span>
-            <span className="text-xs text-gray-500">Target metrics</span>
+            <span className="text-sm font-medium text-foreground">Set Goals</span>
+            <span className="text-xs text-muted-foreground">Target metrics</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <Download className="h-8 w-8 text-purple-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Export Report</span>
-            <span className="text-xs text-gray-500">PDF/Excel</span>
+            <span className="text-sm font-medium text-foreground">Export Report</span>
+            <span className="text-xs text-muted-foreground">PDF/Excel</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <Share2 className="h-8 w-8 text-orange-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Share Progress</span>
-            <span className="text-xs text-gray-500">With members</span>
+            <span className="text-sm font-medium text-foreground">Share Progress</span>
+            <span className="text-xs text-muted-foreground">With members</span>
           </button>
         </div>
       </div>

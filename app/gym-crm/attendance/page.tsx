@@ -60,9 +60,9 @@ export default function AttendancePage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
-      case 'checked-in': return 'bg-blue-100 text-blue-800';
+      case 'checked-in': return 'bg-primary/10 text-primary';
       case 'late': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -71,7 +71,7 @@ export default function AttendancePage() {
       case 'QR Code': return 'bg-purple-100 text-purple-800';
       case 'Manual': return 'bg-orange-100 text-orange-800';
       case 'Biometric': return 'bg-indigo-100 text-indigo-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -79,71 +79,71 @@ export default function AttendancePage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Attendance Tracking</h1>
-        <p className="mt-2 text-gray-600">Track member attendance using QR codes, biometric, or manual entry</p>
+        <h1 className="text-3xl font-bold text-foreground">Attendance Tracking</h1>
+        <p className="mt-2 text-muted-foreground">Track member attendance using QR codes, biometric, or manual entry</p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-8 w-8 text-primary" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Total Members</p>
-              <p className="text-2xl font-semibold text-gray-900">1,234</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Members</p>
+              <p className="text-2xl font-semibold text-foreground">1,234</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <CheckCircle className="h-8 w-8 text-green-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Present Today</p>
-              <p className="text-2xl font-semibold text-gray-900">89</p>
+              <p className="text-sm font-medium text-muted-foreground">Present Today</p>
+              <p className="text-2xl font-semibold text-foreground">89</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <XCircle className="h-8 w-8 text-red-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Absent Today</p>
-              <p className="text-2xl font-semibold text-gray-900">45</p>
+              <p className="text-sm font-medium text-muted-foreground">Absent Today</p>
+              <p className="text-2xl font-semibold text-foreground">45</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Clock className="h-8 w-8 text-purple-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Avg. Duration</p>
-              <p className="text-2xl font-semibold text-gray-900">1h 32m</p>
+              <p className="text-sm font-medium text-muted-foreground">Avg. Duration</p>
+              <p className="text-2xl font-semibold text-foreground">1h 32m</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Attendance Methods Tabs */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="border-b border-gray-200">
+      <div className="bg-card rounded-xl border border-border">
+        <div className="border-b border-border">
           <nav className="-mb-px flex space-x-8 px-6">
             <button
               onClick={() => setActiveTab('scan')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'scan'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
               }`}
             >
               <QrCode className="h-5 w-5 inline mr-2" />
@@ -151,10 +151,10 @@ export default function AttendancePage() {
             </button>
             <button
               onClick={() => setActiveTab('manual')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'manual'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
               }`}
             >
               <UserCheck className="h-5 w-5 inline mr-2" />
@@ -162,10 +162,10 @@ export default function AttendancePage() {
             </button>
             <button
               onClick={() => setActiveTab('biometric')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'biometric'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
               }`}
             >
               <Users className="h-5 w-5 inline mr-2" />
@@ -177,19 +177,19 @@ export default function AttendancePage() {
         <div className="p-6">
           {activeTab === 'scan' && (
             <div className="text-center space-y-6">
-              <div className="mx-auto w-64 h-64 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+              <div className="mx-auto w-64 h-64 bg-muted/50 rounded-xl border-2 border-dashed border-border flex items-center justify-center">
                 <div className="text-center">
-                  <QrCode className="mx-auto h-12 w-12 text-gray-400" />
-                  <p className="mt-2 text-sm text-gray-500">QR Code Scanner</p>
-                  <p className="text-xs text-gray-400">Point camera at member's QR code</p>
+                  <QrCode className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <p className="mt-2 text-sm text-muted-foreground">QR Code Scanner</p>
+                  <p className="text-xs text-muted-foreground">Point camera at member's QR code</p>
                 </div>
               </div>
               <div className="space-y-4">
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
                   <QrCode className="h-4 w-4 mr-2" />
                   Start Scanner
                 </button>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Members can also scan their QR code at the entrance
                 </p>
               </div>
@@ -203,28 +203,28 @@ export default function AttendancePage() {
                   <input
                     type="text"
                     placeholder="Search member by name or ID..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                   />
                 </div>
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Entry
                 </button>
               </div>
               
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Quick Actions</h4>
+              <div className="bg-muted/50 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-foreground mb-2">Quick Actions</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  <button className="p-2 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200">
+                  <button className="p-2 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors">
                     Check In
                   </button>
-                  <button className="p-2 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200">
+                  <button className="p-2 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200 transition-colors">
                     Check Out
                   </button>
-                  <button className="p-2 text-sm bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200">
+                  <button className="p-2 text-sm bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200 transition-colors">
                     Mark Late
                   </button>
-                  <button className="p-2 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200">
+                  <button className="p-2 text-sm bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors">
                     Bulk Entry
                   </button>
                 </div>
@@ -234,19 +234,19 @@ export default function AttendancePage() {
 
           {activeTab === 'biometric' && (
             <div className="text-center space-y-6">
-              <div className="mx-auto w-64 h-64 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+              <div className="mx-auto w-64 h-64 bg-muted/50 rounded-xl border-2 border-dashed border-border flex items-center justify-center">
                 <div className="text-center">
-                  <Users className="mx-auto h-12 w-12 text-gray-400" />
-                  <p className="mt-2 text-sm text-gray-500">Biometric Scanner</p>
-                  <p className="text-xs text-gray-400">Place finger on scanner</p>
+                  <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <p className="mt-2 text-sm text-muted-foreground">Biometric Scanner</p>
+                  <p className="text-xs text-muted-foreground">Place finger on scanner</p>
                 </div>
               </div>
               <div className="space-y-4">
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
                   <Users className="h-4 w-4 mr-2" />
                   Start Biometric Scanner
                 </button>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Connect biometric device to enable fingerprint scanning
                 </p>
               </div>
@@ -256,25 +256,25 @@ export default function AttendancePage() {
       </div>
 
       {/* Attendance History */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <h3 className="text-lg font-medium text-gray-900">Today's Attendance</h3>
+            <h3 className="text-lg font-medium text-foreground">Today's Attendance</h3>
             <div className="mt-4 sm:mt-0 flex items-center space-x-4">
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search attendance..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 pr-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                 />
               </div>
             </div>
@@ -282,57 +282,57 @@ export default function AttendancePage() {
         </div>
         
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Member
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Check In
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Check Out
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Duration
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Method
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-border">
               {filteredAttendance.map((attendance) => (
-                <tr key={attendance.id} className="hover:bg-gray-50">
+                <tr key={attendance.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-8 w-8">
-                        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">
+                        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-primary-foreground text-xs font-medium">
                             {attendance.memberName.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{attendance.memberName}</div>
-                        <div className="text-sm text-gray-500">{attendance.memberId}</div>
+                        <div className="text-sm font-medium text-foreground">{attendance.memberName}</div>
+                        <div className="text-sm text-muted-foreground">{attendance.memberId}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {attendance.checkIn}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {attendance.checkOut || '-'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                     {attendance.duration || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -348,11 +348,11 @@ export default function AttendancePage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
                       {!attendance.checkOut && (
-                        <button className="text-red-600 hover:text-red-900">
+                        <button className="text-red-600 hover:text-red-800 transition-colors">
                           Check Out
                         </button>
                       )}
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-primary hover:text-primary/80 transition-colors">
                         Edit
                       </button>
                     </div>

@@ -102,28 +102,28 @@ export default function NewMemberPage() {
       <div className="flex items-center space-x-4">
         <Link
           href="/gym-crm/members"
-          className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
+          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Members
         </Link>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Add New Member</h1>
-          <p className="mt-2 text-gray-600">Register a new gym member with complete information</p>
+          <h1 className="text-3xl font-bold text-foreground">Add New Member</h1>
+          <p className="mt-2 text-muted-foreground">Register a new gym member with complete information</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Personal Information */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center space-x-2 mb-6">
-            <User className="h-5 w-5 text-blue-500" />
-            <h3 className="text-lg font-medium text-gray-900">Personal Information</h3>
+            <User className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-medium text-foreground">Personal Information</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 First Name *
               </label>
               <input
@@ -131,8 +131,8 @@ export default function NewMemberPage() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.firstName ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.firstName ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter first name"
               />
@@ -142,7 +142,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Last Name *
               </label>
               <input
@@ -150,8 +150,8 @@ export default function NewMemberPage() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.lastName ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.lastName ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter last name"
               />
@@ -161,7 +161,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Phone Number *
               </label>
               <input
@@ -169,8 +169,8 @@ export default function NewMemberPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.phone ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.phone ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="+91 98765 43210"
               />
@@ -180,7 +180,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Email Address
               </label>
               <input
@@ -188,8 +188,8 @@ export default function NewMemberPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.email ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter email address"
               />
@@ -199,7 +199,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Date of Birth
               </label>
               <input
@@ -207,19 +207,19 @@ export default function NewMemberPage() {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Gender
               </label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               >
                 <option value="">Select gender</option>
                 <option value="male">Male</option>
@@ -231,15 +231,15 @@ export default function NewMemberPage() {
         </div>
 
         {/* Address Information */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center space-x-2 mb-6">
             <MapPin className="h-5 w-5 text-green-500" />
-            <h3 className="text-lg font-medium text-gray-900">Address Information</h3>
+            <h3 className="text-lg font-medium text-foreground">Address Information</h3>
           </div>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Full Address *
               </label>
               <textarea
@@ -247,8 +247,8 @@ export default function NewMemberPage() {
                 value={formData.address}
                 onChange={handleInputChange}
                 rows={3}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.address ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.address ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter complete address"
               />
@@ -259,7 +259,7 @@ export default function NewMemberPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   City
                 </label>
                 <input
@@ -267,13 +267,13 @@ export default function NewMemberPage() {
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                   placeholder="Enter city"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   State
                 </label>
                 <input
@@ -281,13 +281,13 @@ export default function NewMemberPage() {
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                   placeholder="Enter state"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Pincode
                 </label>
                 <input
@@ -295,7 +295,7 @@ export default function NewMemberPage() {
                   name="pincode"
                   value={formData.pincode}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                   placeholder="Enter pincode"
                 />
               </div>
@@ -304,15 +304,15 @@ export default function NewMemberPage() {
         </div>
 
         {/* Emergency Contact */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center space-x-2 mb-6">
             <AlertTriangle className="h-5 w-5 text-orange-500" />
-            <h3 className="text-lg font-medium text-gray-900">Emergency Contact</h3>
+            <h3 className="text-lg font-medium text-foreground">Emergency Contact</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Emergency Contact Name *
               </label>
               <input
@@ -320,8 +320,8 @@ export default function NewMemberPage() {
                 name="emergencyName"
                 value={formData.emergencyName}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.emergencyName ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.emergencyName ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter emergency contact name"
               />
@@ -331,7 +331,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Emergency Contact Phone *
               </label>
               <input
@@ -339,8 +339,8 @@ export default function NewMemberPage() {
                 name="emergencyPhone"
                 value={formData.emergencyPhone}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.emergencyPhone ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.emergencyPhone ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="+91 98765 43210"
               />
@@ -350,7 +350,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Relationship
               </label>
               <input
@@ -358,7 +358,7 @@ export default function NewMemberPage() {
                 name="emergencyRelation"
                 value={formData.emergencyRelation}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                 placeholder="e.g., Spouse, Parent, Friend"
               />
             </div>
@@ -366,23 +366,23 @@ export default function NewMemberPage() {
         </div>
 
         {/* Membership Details */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center space-x-2 mb-6">
             <CreditCard className="h-5 w-5 text-purple-500" />
-            <h3 className="text-lg font-medium text-gray-900">Membership Details</h3>
+            <h3 className="text-lg font-medium text-foreground">Membership Details</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Membership Type *
               </label>
               <select
                 name="membershipType"
                 value={formData.membershipType}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.membershipType ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.membershipType ? 'border-red-500' : 'border-border'
                 }`}
               >
                 <option value="">Select membership type</option>
@@ -396,7 +396,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Start Date *
               </label>
               <input
@@ -404,8 +404,8 @@ export default function NewMemberPage() {
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.startDate ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.startDate ? 'border-red-500' : 'border-border'
                 }`}
               />
               {errors.startDate && (
@@ -414,14 +414,14 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Duration (months)
               </label>
               <select
                 name="duration"
                 value={formData.duration}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               >
                 <option value="">Select duration</option>
                 <option value="1">1 Month</option>
@@ -432,7 +432,7 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Amount (₹) *
               </label>
               <input
@@ -440,8 +440,8 @@ export default function NewMemberPage() {
                 name="amount"
                 value={formData.amount}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                  errors.amount ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
+                  errors.amount ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter amount"
               />
@@ -452,8 +452,8 @@ export default function NewMemberPage() {
           </div>
           
           {formData.startDate && formData.duration && (
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-800">
+            <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+              <p className="text-sm text-primary">
                 <strong>Membership End Date:</strong> {calculateEndDate()}
               </p>
             </div>
@@ -461,15 +461,15 @@ export default function NewMemberPage() {
         </div>
 
         {/* Health Information */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center space-x-2 mb-6">
             <AlertTriangle className="h-5 w-5 text-red-500" />
-            <h3 className="text-lg font-medium text-gray-900">Health Information</h3>
+            <h3 className="text-lg font-medium text-foreground">Health Information</h3>
           </div>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Medical Conditions
               </label>
               <textarea
@@ -477,13 +477,13 @@ export default function NewMemberPage() {
                 value={formData.medicalConditions}
                 onChange={handleInputChange}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                 placeholder="Any medical conditions we should be aware of?"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Allergies
               </label>
               <textarea
@@ -491,13 +491,13 @@ export default function NewMemberPage() {
                 value={formData.allergies}
                 onChange={handleInputChange}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                 placeholder="Any allergies or dietary restrictions?"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Fitness Goals
               </label>
               <textarea
@@ -505,7 +505,7 @@ export default function NewMemberPage() {
                 value={formData.fitnessGoals}
                 onChange={handleInputChange}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
                 placeholder="What are your fitness goals?"
               />
             </div>
@@ -516,13 +516,13 @@ export default function NewMemberPage() {
         <div className="flex justify-end space-x-4">
           <Link
             href="/gym-crm/members"
-            className="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="px-6 py-2 border border-border rounded-lg text-sm font-medium text-foreground bg-background hover:bg-accent transition-colors"
           >
             Cancel
           </Link>
           <button
             type="submit"
-            className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+            className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
           >
             <Save className="h-4 w-4 mr-2" />
             Save Member

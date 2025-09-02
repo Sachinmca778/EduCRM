@@ -19,7 +19,7 @@ export default function GymCRMDashboard() {
   ];
 
   const quickActions = [
-    { name: 'Add New Member', href: '/gym-crm/members/new', icon: Users, color: 'bg-blue-500' },
+    { name: 'Add New Member', href: '/gym-crm/members/new', icon: Users, color: 'bg-primary' },
     { name: 'Record Attendance', href: '/gym-crm/attendance', icon: CheckCircle, color: 'bg-green-500' },
     { name: 'Process Payment', href: '/gym-crm/payments/new', icon: CreditCard, color: 'bg-purple-500' },
     { name: 'View Reports', href: '/gym-crm/reports', icon: TrendingUp, color: 'bg-orange-500' },
@@ -36,8 +36,8 @@ export default function GymCRMDashboard() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-gray-600">Welcome to your Gym CRM dashboard</p>
+        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+        <p className="mt-2 text-muted-foreground">Welcome to your Gym CRM dashboard</p>
       </div>
 
       {/* Stats Grid */}
@@ -45,14 +45,14 @@ export default function GymCRMDashboard() {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.name} className="bg-white rounded-lg shadow p-6">
+            <div key={stat.name} className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <Icon className="h-8 w-8 text-gray-400" />
+                  <Icon className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500">{stat.name}</p>
-                  <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+                  <p className="text-sm font-medium text-muted-foreground">{stat.name}</p>
+                  <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
                 </div>
               </div>
               <div className="mt-4">
@@ -63,7 +63,7 @@ export default function GymCRMDashboard() {
                 }`}>
                   {stat.change}
                 </span>
-                <span className="ml-2 text-sm text-gray-500">from last month</span>
+                <span className="ml-2 text-sm text-muted-foreground">from last month</span>
               </div>
             </div>
           );
@@ -71,9 +71,9 @@ export default function GymCRMDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Quick Actions</h3>
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">Quick Actions</h3>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -83,12 +83,12 @@ export default function GymCRMDashboard() {
                 <Link
                   key={action.name}
                   href={action.href}
-                  className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all"
+                  className="flex items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200"
                 >
                   <div className={`p-2 rounded-lg ${action.color}`}>
                     <Icon className="h-6 w-6 text-white" />
                   </div>
-                  <span className="ml-3 text-sm font-medium text-gray-900">{action.name}</span>
+                  <span className="ml-3 text-sm font-medium text-foreground">{action.name}</span>
                 </Link>
               );
             })}
@@ -97,26 +97,26 @@ export default function GymCRMDashboard() {
       </div>
 
       {/* Recent Activities */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Recent Activities</h3>
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">Recent Activities</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">
             {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={activity.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className={`w-2 h-2 rounded-full ${
                     activity.type === 'renewal' ? 'bg-green-500' :
-                    activity.type === 'new' ? 'bg-blue-500' :
+                    activity.type === 'new' ? 'bg-primary' :
                     activity.type === 'payment' ? 'bg-purple-500' : 'bg-orange-500'
                   }`} />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{activity.member}</p>
-                    <p className="text-sm text-gray-500">{activity.action}</p>
+                    <p className="text-sm font-medium text-foreground">{activity.member}</p>
+                    <p className="text-sm text-muted-foreground">{activity.action}</p>
                   </div>
                 </div>
-                <span className="text-sm text-gray-400">{activity.time}</span>
+                <span className="text-sm text-muted-foreground">{activity.time}</span>
               </div>
             ))}
           </div>
@@ -124,9 +124,9 @@ export default function GymCRMDashboard() {
       </div>
 
       {/* Alerts */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Alerts & Notifications</h3>
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">Alerts & Notifications</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">

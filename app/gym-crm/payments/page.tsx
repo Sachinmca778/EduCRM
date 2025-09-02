@@ -80,7 +80,7 @@ export default function PaymentsPage() {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'overdue': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -88,9 +88,9 @@ export default function PaymentsPage() {
     switch (method) {
       case 'UPI': return 'bg-purple-100 text-purple-800';
       case 'Cash': return 'bg-green-100 text-green-800';
-      case 'Card': return 'bg-blue-100 text-blue-800';
+      case 'Card': return 'bg-primary/10 text-primary';
       case 'Online': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -103,12 +103,12 @@ export default function PaymentsPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Payments</h1>
-          <p className="mt-2 text-gray-600">Manage gym membership payments and fee collection</p>
+          <h1 className="text-3xl font-bold text-foreground">Payments</h1>
+          <p className="mt-2 text-muted-foreground">Manage gym membership payments and fee collection</p>
         </div>
         <Link
           href="/gym-crm/payments/new"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
         >
           <Plus className="h-4 w-4 mr-2" />
           Record Payment
@@ -117,97 +117,97 @@ export default function PaymentsPage() {
 
       {/* Payment Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <DollarSign className="h-8 w-8 text-green-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{totalRevenue.toLocaleString()}</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
+              <p className="text-2xl font-semibold text-foreground">₹{totalRevenue.toLocaleString()}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Clock className="h-8 w-8 text-yellow-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Pending Payments</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{pendingAmount.toLocaleString()}</p>
+              <p className="text-sm font-medium text-muted-foreground">Pending Payments</p>
+              <p className="text-2xl font-semibold text-foreground">₹{pendingAmount.toLocaleString()}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <AlertTriangle className="h-8 w-8 text-red-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Overdue Amount</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{overdueAmount.toLocaleString()}</p>
+              <p className="text-sm font-medium text-muted-foreground">Overdue Amount</p>
+              <p className="text-2xl font-semibold text-foreground">₹{overdueAmount.toLocaleString()}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <CheckCircle className="h-8 w-8 text-blue-500" />
+              <CheckCircle className="h-8 w-8 text-primary" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Completed Today</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{totalRevenue.toLocaleString()}</p>
+              <p className="text-sm font-medium text-muted-foreground">Completed Today</p>
+              <p className="text-2xl font-semibold text-foreground">₹{totalRevenue.toLocaleString()}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+      <div className="bg-card rounded-xl border border-border p-6">
+        <h3 className="text-lg font-medium text-foreground mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
-            <Send className="h-8 w-8 text-blue-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Send Reminders</span>
-            <span className="text-xs text-gray-500">WhatsApp, Email, SMS</span>
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
+            <Send className="h-8 w-8 text-primary mb-2" />
+            <span className="text-sm font-medium text-foreground">Send Reminders</span>
+            <span className="text-xs text-muted-foreground">WhatsApp, Email, SMS</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <Download className="h-8 w-8 text-green-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Generate Receipts</span>
-            <span className="text-xs text-gray-500">PDF Downloads</span>
+            <span className="text-sm font-medium text-foreground">Generate Receipts</span>
+            <span className="text-xs text-muted-foreground">PDF Downloads</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <AlertTriangle className="h-8 w-8 text-orange-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Overdue Report</span>
-            <span className="text-xs text-gray-500">View all pending</span>
+            <span className="text-sm font-medium text-foreground">Overdue Report</span>
+            <span className="text-xs text-muted-foreground">View all pending</span>
           </button>
           
-          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all">
+          <button className="flex flex-col items-center p-4 border border-border rounded-lg hover:border-primary/50 hover:shadow-sm transition-all duration-200">
             <DollarSign className="h-8 w-8 text-purple-500 mb-2" />
-            <span className="text-sm font-medium text-gray-900">Bulk Collection</span>
-            <span className="text-xs text-gray-500">Multiple payments</span>
+            <span className="text-sm font-medium text-foreground">Bulk Collection</span>
+            <span className="text-xs text-muted-foreground">Multiple payments</span>
           </button>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search payments by member name or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full pl-10 pr-3 py-2 border border-border rounded-lg leading-5 bg-background placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function PaymentsPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground transition-colors"
             >
               <option value="all">All Status</option>
               <option value="completed">Completed</option>
@@ -225,7 +225,7 @@ export default function PaymentsPage() {
             <select
               value={selectedPaymentMethod}
               onChange={(e) => setSelectedPaymentMethod(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring bg-background text-foreground transition-colors"
             >
               <option value="all">All Methods</option>
               <option value="UPI">UPI</option>
@@ -233,7 +233,7 @@ export default function PaymentsPage() {
               <option value="Card">Card</option>
               <option value="Online">Online</option>
             </select>
-            <button className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button className="inline-flex items-center px-3 py-2 border border-border rounded-lg text-sm font-medium text-foreground bg-background hover:bg-accent transition-colors">
               <Filter className="h-4 w-4 mr-2" />
               More Filters
             </button>
@@ -242,58 +242,58 @@ export default function PaymentsPage() {
       </div>
 
       {/* Payments List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">
             {filteredPayments.length} Payments
           </h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Member
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Amount
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Payment Method
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Due Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-border">
               {filteredPayments.map((payment) => (
-                <tr key={payment.id} className="hover:bg-gray-50">
+                <tr key={payment.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-8 w-8">
-                        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">
+                        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-primary-foreground text-xs font-medium">
                             {payment.memberName.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{payment.memberName}</div>
-                        <div className="text-sm text-gray-500">{payment.memberId} • {payment.membershipType}</div>
+                        <div className="text-sm font-medium text-foreground">{payment.memberName}</div>
+                        <div className="text-sm text-muted-foreground">{payment.memberId} • {payment.membershipType}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">₹{payment.amount.toLocaleString()}</div>
+                    <div className="text-sm font-medium text-foreground">₹{payment.amount.toLocaleString()}</div>
                     {payment.transactionId && (
-                      <div className="text-xs text-gray-500">TXN: {payment.transactionId}</div>
+                      <div className="text-xs text-muted-foreground">TXN: {payment.transactionId}</div>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -307,7 +307,7 @@ export default function PaymentsPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{payment.dueDate}</div>
+                    <div className="text-sm text-foreground">{payment.dueDate}</div>
                     {payment.status === 'overdue' && (
                       <div className="text-xs text-red-600 font-medium">
                         {Math.ceil((new Date().getTime() - new Date(payment.dueDate).getTime()) / (1000 * 60 * 60 * 24))} days overdue
@@ -317,24 +317,24 @@ export default function PaymentsPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
                       {payment.status === 'completed' && (
-                        <button className="text-green-600 hover:text-green-900">
+                        <button className="text-green-600 hover:text-green-800 transition-colors">
                           <Download className="h-4 w-4" />
                         </button>
                       )}
                       {payment.status === 'pending' && (
-                        <button className="text-blue-600 hover:text-blue-900">
+                        <button className="text-primary hover:text-primary/80 transition-colors">
                           Mark Paid
                         </button>
                       )}
                       {payment.status === 'overdue' && (
                         <div className="flex space-x-1">
-                          <button className="text-orange-600 hover:text-orange-900" title="Send WhatsApp">
+                          <button className="text-orange-600 hover:text-orange-800 transition-colors" title="Send WhatsApp">
                             <Phone className="h-4 w-4" />
                           </button>
-                          <button className="text-blue-600 hover:text-blue-900" title="Send Email">
+                          <button className="text-primary hover:text-primary/80 transition-colors" title="Send Email">
                             <Mail className="h-4 w-4" />
                           </button>
-                          <button className="text-green-600 hover:text-green-900" title="Send SMS">
+                          <button className="text-green-600 hover:text-green-800 transition-colors" title="Send SMS">
                             <MessageSquare className="h-4 w-4" />
                           </button>
                         </div>
@@ -349,9 +349,9 @@ export default function PaymentsPage() {
       </div>
 
       {/* Payment Reminders */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Payment Reminders</h3>
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-lg font-medium text-foreground">Payment Reminders</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">
@@ -363,7 +363,7 @@ export default function PaymentsPage() {
                   <p className="text-sm text-yellow-600">Total amount: ₹22,450</p>
                 </div>
               </div>
-              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700">
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 transition-colors">
                 <Send className="h-4 w-4 mr-2" />
                 Send Reminders
               </button>
@@ -377,7 +377,7 @@ export default function PaymentsPage() {
                   <p className="text-sm text-red-600">Total amount: ₹12,800</p>
                 </div>
               </div>
-              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 transition-colors">
                 <Send className="h-4 w-4 mr-2" />
                 Send Urgent Reminders
               </button>
