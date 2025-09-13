@@ -31,8 +31,8 @@ export default function NewMemberPage() {
     pincode: '',
     
     // Emergency Contact
-    emergencyName: '',
-    emergencyPhone: '',
+    emergencyContactName: '',
+    emergencyContactPhone: '',
     emergencyRelation: '',
     
     // Membership
@@ -46,6 +46,9 @@ export default function NewMemberPage() {
     allergies: '',
     fitnessGoals: ''
   });
+
+  const [message, setMessage] = useState("");
+
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -67,8 +70,8 @@ export default function NewMemberPage() {
     if (!formData.phone) newErrors.phone = 'Phone number is required';
     if (!formData.email && !formData.phone) newErrors.email = 'Either email or phone is required';
     if (!formData.address) newErrors.address = 'Address is required';
-    if (!formData.emergencyName) newErrors.emergencyName = 'Emergency contact name is required';
-    if (!formData.emergencyPhone) newErrors.emergencyPhone = 'Emergency contact phone is required';
+    if (!formData.emergencyContactName) newErrors.emergencyContactName = 'Emergency contact name is required';
+    if (!formData.emergencyContactPhone) newErrors.emergencyContactPhone = 'Emergency contact phone is required';
     if (!formData.membershipType) newErrors.membershipType = 'Membership type is required';
     if (!formData.startDate) newErrors.startDate = 'Start date is required';
     if (!formData.amount) newErrors.amount = 'Amount is required';
@@ -77,12 +80,30 @@ export default function NewMemberPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission
-      console.log('Form submitted:', formData);
-      // Redirect to members list or show success message
+
+    try {
+      const res = await fetch("http://localhost:8080/gym/members/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": "Bearer " + token // agar JWT laga hai to
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const data = await res.json();
+      setMessage(`Member created successfully. Code: ${data.memberCode}`);
+    } catch (error) {
+      console.error(error);
+      setMessage("Error creating member");
     }
   };
 
@@ -222,9 +243,9 @@ export default function NewMemberPage() {
                 className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               >
                 <option value="">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
               </select>
             </div>
           </div>
@@ -317,16 +338,16 @@ export default function NewMemberPage() {
               </label>
               <input
                 type="text"
-                name="emergencyName"
-                value={formData.emergencyName}
+                name="emergencyContactName"
+                value={formData.emergencyContactName}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
-                  errors.emergencyName ? 'border-red-500' : 'border-border'
+                  errors.emergencyContactName ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="Enter emergency contact name"
               />
-              {errors.emergencyName && (
-                <p className="mt-1 text-sm text-red-600">{errors.emergencyName}</p>
+              {errors.emergencyContactName && (
+                <p className="mt-1 text-sm text-red-600">{errors.emergencyContactName}</p>
               )}
             </div>
             
@@ -336,16 +357,16 @@ export default function NewMemberPage() {
               </label>
               <input
                 type="tel"
-                name="emergencyPhone"
-                value={formData.emergencyPhone}
+                name="emergencyContactPhone"
+                value={formData.emergencyContactPhone}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
-                  errors.emergencyPhone ? 'border-red-500' : 'border-border'
+                  errors.emergencyContactPhone ? 'border-red-500' : 'border-border'
                 }`}
                 placeholder="+91 98765 43210"
               />
-              {errors.emergencyPhone && (
-                <p className="mt-1 text-sm text-red-600">{errors.emergencyPhone}</p>
+              {errors.emergencyContactPhone && (
+                <p className="mt-1 text-sm text-red-600">{errors.emergencyContactPhone}</p>
               )}
             </div>
             

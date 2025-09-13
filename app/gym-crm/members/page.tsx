@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Users, 
@@ -18,59 +18,78 @@ import {
 export default function MembersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [members, setMembers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const members = [
-    {
-      id: 1,
-      name: 'Rahul Sharma',
-      email: 'rahul.sharma@email.com',
-      phone: '+91 98765 43210',
-      address: 'Mumbai, Maharashtra',
-      emergencyContact: '+91 98765 43211',
-      membershipType: 'Premium',
-      status: 'active',
-      joinDate: '2024-01-15',
-      expiryDate: '2025-01-15',
-      lastVisit: '2024-12-20',
-      dues: 0
-    },
-    {
-      id: 2,
-      name: 'Priya Patel',
-      email: 'priya.patel@email.com',
-      phone: '+91 98765 43212',
-      address: 'Delhi, NCR',
-      emergencyContact: '+91 98765 43213',
-      membershipType: 'Basic',
-      status: 'active',
-      joinDate: '2024-02-01',
-      expiryDate: '2025-02-01',
-      lastVisit: '2024-12-19',
-      dues: 1500
-    },
-    {
-      id: 3,
-      name: 'Amit Kumar',
-      email: 'amit.kumar@email.com',
-      phone: '+91 98765 43214',
-      address: 'Bangalore, Karnataka',
-      emergencyContact: '+91 98765 43215',
-      membershipType: 'Premium',
-      status: 'expired',
-      joinDate: '2023-12-01',
-      expiryDate: '2024-12-01',
-      lastVisit: '2024-11-28',
-      dues: 3000
-    }
-  ];
+  useEffect(() => {
+    // call your backend API
+    fetch('http://localhost:8080/gym/members/all')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch members');
+        return res.json();
+      })
+      .then(data => {
+        setMembers(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  // const members = [
+  //   {
+  //     id: 1,
+  //     name: 'Rahul Sharma',
+  //     email: 'rahul.sharma@email.com',
+  //     phone: '+91 98765 43210',
+  //     address: 'Mumbai, Maharashtra',
+  //     emergencyContact: '+91 98765 43211',
+  //     membershipType: 'Premium',
+  //     status: 'active',
+  //     joinDate: '2024-01-15',
+  //     expiryDate: '2025-01-15',
+  //     lastVisit: '2024-12-20',
+  //     dues: 0
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Priya Patel',
+  //     email: 'priya.patel@email.com',
+  //     phone: '+91 98765 43212',
+  //     address: 'Delhi, NCR',
+  //     emergencyContact: '+91 98765 43213',
+  //     membershipType: 'Basic',
+  //     status: 'active',
+  //     joinDate: '2024-02-01',
+  //     expiryDate: '2025-02-01',
+  //     lastVisit: '2024-12-19',
+  //     dues: 1500
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Amit Kumar',
+  //     email: 'amit.kumar@email.com',
+  //     phone: '+91 98765 43214',
+  //     address: 'Bangalore, Karnataka',
+  //     emergencyContact: '+91 98765 43215',
+  //     membershipType: 'Premium',
+  //     status: 'expired',
+  //     joinDate: '2023-12-01',
+  //     expiryDate: '2024-12-01',
+  //     lastVisit: '2024-11-28',
+  //     dues: 3000
+  //   }
+  // ];
 
   const filteredMembers = members.filter(member => {
-    const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.phone.includes(searchTerm);
-    
-    const matchesFilter = filterStatus === 'all' || member.status === filterStatus;
-    
+    const matchesSearch = `${member.firstName} ${member.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         member.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         member.phone?.includes(searchTerm);
+    const matchesFilter = filterStatus === 'all' || member.status?.toLowerCase() === filterStatus;
     return matchesSearch && matchesFilter;
   });
 
@@ -185,12 +204,12 @@ export default function MembersPage() {
                       <div className="flex-shrink-0 h-10 w-10">
                         <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                           <span className="text-primary-foreground font-medium text-sm">
-                            {member.name.split(' ').map(n => n[0]).join('')}
+                            {member.firstName.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-foreground">{member.name}</div>
+                        <div className="text-sm font-medium text-foreground">{member.firstName + ' ' + member.lastName}</div>
                         <div className="text-sm text-muted-foreground">ID: {member.id}</div>
                       </div>
                     </div>
@@ -200,16 +219,16 @@ export default function MembersPage() {
                     <div className="text-sm text-muted-foreground">{member.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMembershipTypeColor(member.membershipType)}`}>
-                      {member.membershipType}
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMembershipTypeColor(member.membershipType || '')}`}>
+                      {member.membershipType || ''}
                     </span>
                     <div className="text-sm text-muted-foreground mt-1">
-                      Expires: {member.expiryDate}
+                      Expires: {member.expiryDate || ''}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(member.status)}`}>
-                      {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+                      {member.status.charAt(0).toUpperCase() + member.status.slice(1) || ''}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
