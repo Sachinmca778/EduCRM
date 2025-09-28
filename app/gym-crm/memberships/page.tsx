@@ -143,6 +143,15 @@ export default function MembershipPage() {
         </div>
       </div>
 
+      {/* Create Membership Plan Button */}
+      <div className="flex justify-end">
+          <Link
+            href="create-membership-plan"
+            className="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark"
+          >
+            + Create Membership Plan
+          </Link>
+        </div>
       <form onSubmit={handleSubmit} className="space-y-6 bg-card rounded-2xl border border-border p-6 shadow-md">
         {/* Member Search */}
         <div>
