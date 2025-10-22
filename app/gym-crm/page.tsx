@@ -1,3 +1,4 @@
+"use client"
 import Link from 'next/link';
 import { 
   Users, 
@@ -9,13 +10,35 @@ import {
   Clock,
   DollarSign
 } from 'lucide-react';
+import { useEffect,useState } from 'react';
 
 export default function GymCRMDashboard() {
+const [summary, setSummary] = useState({});
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(true);
+
+  useEffect(() => {
+    // call your backend API
+    fetch('http://localhost:8080/gym/members/dashborad/summary')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch summary');
+        return res.json();
+      })
+      .then(data => {
+        setSummary(data);
+        return data;
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   const stats = [
-    { name: 'Total Members', value: '1,234', change: '+12%', changeType: 'positive', icon: Users },
-    { name: 'Active Memberships', value: '1,089', change: '+8%', changeType: 'positive', icon: Calendar },
-    { name: 'Monthly Revenue', value: '₹2,45,000', change: '+15%', changeType: 'positive', icon: DollarSign },
-    { name: 'Expiring This Month', value: '89', change: '-5%', changeType: 'negative', icon: AlertTriangle },
+    { name: 'Total Members', value: summary?.totalMembers , change: '+12%', changeType: 'positive', icon: Users },
+    { name: 'Active Memberships', value: summary?.activeMembers , change: '+8%', changeType: 'positive', icon: Calendar },
+    { name: 'Monthly Revenue', value: summary?.totalPaymentsCurrentMonth , change: '+15%', changeType: 'positive', icon: DollarSign },
+    { name: 'Expiring This Month', value: summary?.expiringMembersCount , change: '-5%', changeType: 'negative', icon: AlertTriangle },
   ];
 
   const quickActions = [
