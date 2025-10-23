@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import Link from 'next/link';
 import { 
   ArrowLeft, 
@@ -48,9 +48,23 @@ export default function NewMemberPage() {
   });
 
   const [message, setMessage] = useState("");
+  const [minDate, setMinDate] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [membershipPlans, setMembershipPlans] = useState<any[]>([]);
 
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    // Calculate the date 15 days before the current date
+    const currentDate = new Date();
+    const pastDate = new Date();
+    pastDate.setDate(currentDate.getDate() - 15);
+
+    const formattedDate = pastDate.toISOString().split('T')[0];
+    setMinDate(formattedDate);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -80,6 +94,23 @@ export default function NewMemberPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+
+  useEffect(() => {
+    fetch('http://localhost:8080/gym/membership_plans/active')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch membership plans');
+        return res.json();
+      })
+      .then((data) => {
+        setMembershipPlans(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
 
   const handleSubmit = async (e) => {
@@ -228,6 +259,8 @@ export default function NewMemberPage() {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
+                onFocus={(e) => e.target.showPicker()}
+                max="2005-12-31"
                 className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
               />
             </div>
@@ -401,15 +434,34 @@ export default function NewMemberPage() {
               <select
                 name="membershipType"
                 value={formData.membershipType}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  handleInputChange(e);
+                  const selectedPlan = membershipPlans.find(
+                    (plan) => plan.name === e.target.value
+                  );
+                  if (selectedPlan) {
+                    setFormData((prev) => ({
+                      ...prev,
+                      duration: selectedPlan.durationMonths.toString(),
+                      amount: selectedPlan.price.toString()
+                    }));
+                  } else {
+                    setFormData((prev) => ({ ...prev, duration: '', amount: '' }) );
+                  }
+                }}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
                   errors.membershipType ? 'border-red-500' : 'border-border'
                 }`}
               >
                 <option value="">Select membership type</option>
-                <option value="Basic">Basic (₹999/month)</option>
-                <option value="Standard">Standard (₹1,499/month)</option>
-                <option value="Premium">Premium (₹2,499/month)</option>
+                  {membershipPlans.map((plan) => {
+                    const monthlyPrice = Math.round(plan.price / plan.durationMonths);
+                    return (
+                      <option key={plan.id} value={plan.name}>
+                        {plan.name} (₹{monthlyPrice}/month)
+                      </option>
+                    );
+                  })}
               </select>
               {errors.membershipType && (
                 <p className="mt-1 text-sm text-red-600">{errors.membershipType}</p>
@@ -425,6 +477,8 @@ export default function NewMemberPage() {
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleInputChange}
+                onFocus={(e) => e.target.showPicker()}
+                min={minDate}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${
                   errors.startDate ? 'border-red-500' : 'border-border'
                 }`}
@@ -435,21 +489,16 @@ export default function NewMemberPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Duration (months)
-              </label>
-              <select
-                name="duration"
-                value={formData.duration}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
-              >
-                <option value="">Select duration</option>
-                <option value="1">1 Month</option>
-                <option value="3">3 Months</option>
-                <option value="6">6 Months</option>
-                <option value="12">12 Months</option>
-              </select>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Duration (months)
+                </label>
+                <input
+                  type="text"
+                  name="duration"
+                  value={formData.duration}
+                  readOnly
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                  />
             </div>
             
             <div>

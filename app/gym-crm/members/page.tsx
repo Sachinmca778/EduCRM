@@ -21,19 +21,21 @@ export default function MembersPage() {
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const recordsPerPage = 10;
 
   useEffect(() => {
-    // call your backend API
     fetch('http://localhost:8080/gym/members/all')
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch members');
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         setMembers(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         setError(err.message);
         setLoading(false);
@@ -92,6 +94,11 @@ export default function MembersPage() {
     const matchesFilter = filterStatus === 'all' || member.status?.toLowerCase() === filterStatus;
     return matchesSearch && matchesFilter;
   });
+
+  const totalPages = Math.ceil(filteredMembers.length / recordsPerPage); // Calculate total pages
+  const startIndex = (currentPage - 1) * recordsPerPage;
+  const endIndex = startIndex + recordsPerPage;
+  const paginatedMembers = filteredMembers.slice(startIndex, endIndex); // Slice members for the current page
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -166,7 +173,7 @@ export default function MembersPage() {
       <div className="bg-card rounded-xl border border-border overflow-hidden">
         <div className="px-6 py-4 border-b border-border">
           <h3 className="text-lg font-medium text-foreground">
-            {filteredMembers.length} Members
+            {paginatedMembers.length} Members
           </h3>
         </div>
         <div className="overflow-x-auto">
@@ -197,7 +204,7 @@ export default function MembersPage() {
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
-              {filteredMembers.map((member) => (
+              {paginatedMembers.map((member) => (
                 <tr key={member.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -268,6 +275,29 @@ export default function MembersPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-background border border-border rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted/30 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-muted-foreground">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-background border border-border rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted/30 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
