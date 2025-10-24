@@ -221,6 +221,26 @@ export default function GymSignupPage() {
             </div>
 
             <div>
+              <label htmlFor="role" className="block text-sm font-medium text-foreground mb-2">
+                Select Role
+              </label>
+              <div className="relative">
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  className="w-full pl-3 pr-10 py-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                >
+                  <option value="ADMIN">Admin</option>
+                  <option value="MANAGER">Manager</option>
+                  <option value="RECEPTIONIST">Receptionist</option>
+                  <option value="TRAINER">Trainer</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
                 Password
               </label>
