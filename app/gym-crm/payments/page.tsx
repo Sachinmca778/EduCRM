@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import Link from 'next/link';
 import { 
   CreditCard, 
@@ -19,9 +19,34 @@ import {
 } from 'lucide-react';
 
 export default function PaymentsPage() {
+  const [paymentSummary, setPaymentSummary] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('all');
+
+
+  useEffect(() => {
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0];
+
+    fetch(`http://localhost:8080/gym/payments/summary?date=${today}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch members');
+        return res.json();
+      })
+      .then((data) => {
+        setPaymentSummary(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
 
   const payments = [
     {
@@ -124,7 +149,7 @@ export default function PaymentsPage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
-              <p className="text-2xl font-semibold text-foreground">₹{totalRevenue.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-foreground">₹{paymentSummary.currentMonthAmount ?? 0}</p>
             </div>
           </div>
         </div>
@@ -136,7 +161,7 @@ export default function PaymentsPage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Pending Payments</p>
-              <p className="text-2xl font-semibold text-foreground">₹{pendingAmount.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-foreground">₹{paymentSummary.pendingAmount ?? 0}</p>
             </div>
           </div>
         </div>
@@ -148,7 +173,7 @@ export default function PaymentsPage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Overdue Amount</p>
-              <p className="text-2xl font-semibold text-foreground">₹{overdueAmount.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-foreground">₹{paymentSummary.totalOverdueAmount ?? 0}</p>
             </div>
           </div>
         </div>
@@ -160,7 +185,7 @@ export default function PaymentsPage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Completed Today</p>
-              <p className="text-2xl font-semibold text-foreground">₹{totalRevenue.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-foreground">₹{paymentSummary.todayRevenue ?? 0}</p>
             </div>
           </div>
         </div>
