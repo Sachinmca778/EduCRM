@@ -1,4 +1,6 @@
+'use client';
 import Link from 'next/link';
+import { usePathname } from "next/navigation";
 import { 
   Users, 
   Calendar, 
@@ -29,11 +31,47 @@ export default function GymCRMLayout({
     { name: 'Reports', href: '/gym-crm/reports', icon: BarChart3 },
   ];
 
+  const pathname = usePathname();
+
+  if (pathname === "/gym-crm/signup/" || pathname === "/gym-crm/login/") {
+    return (
+      <div className="min-h-screen bg-background">
+      {/* Header */}
+        <header className="bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <Dumbbell className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <span className="text-xl font-bold text-foreground">Gym CRM</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Bell className="h-6 w-6" />
+                </button>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <span className="text-primary-foreground text-sm font-medium">A</span>
+                  </div>
+                  <span className="text-sm font-medium text-foreground">Admin</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="min-h-screen bg-background">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
