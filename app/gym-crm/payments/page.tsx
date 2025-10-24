@@ -20,6 +20,7 @@ import {
 
 export default function PaymentsPage() {
   const [paymentSummary, setPaymentSummary] = useState<any[]>([]);
+  const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,7 +34,7 @@ export default function PaymentsPage() {
 
     fetch(`http://localhost:8080/gym/payments/summary?date=${today}`)
       .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch members');
+        if (!res.ok) throw new Error('Failed to fetch Payment Summary');
         return res.json();
       })
       .then((data) => {
@@ -47,56 +48,85 @@ export default function PaymentsPage() {
       });
   }, []);
 
-
-  const payments = [
-    {
-      id: 1,
-      memberId: 'M001',
-      memberName: 'Rahul Sharma',
-      amount: 2499,
-      paymentMethod: 'UPI',
-      status: 'completed',
-      date: '2024-12-20',
-      dueDate: '2024-12-25',
-      membershipType: 'Premium',
-      transactionId: 'TXN123456789',
-      reminderSent: false
-    },
-    {
-      id: 2,
-      memberId: 'M002',
-      memberName: 'Priya Patel',
-      amount: 1499,
-      paymentMethod: 'Cash',
-      status: 'pending',
-      date: null,
-      dueDate: '2024-12-22',
-      membershipType: 'Standard',
-      transactionId: null,
-      reminderSent: true
-    },
-    {
-      id: 3,
-      memberId: 'M003',
-      memberName: 'Amit Kumar',
-      amount: 999,
-      paymentMethod: 'Card',
-      status: 'overdue',
-      date: null,
-      dueDate: '2024-12-18',
-      membershipType: 'Basic',
-      transactionId: null,
-      reminderSent: true
-    }
-  ];
-
-  const filteredPayments = payments.filter(payment => {
-    const matchesSearch = payment.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         payment.memberId.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
     
+    fetch(`http://localhost:8080/gym/payments/all_payments`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch All Payments');
+        return res.json();
+      })
+      .then((data) => {
+        const normalizedData = Array.isArray(data)
+        ? data.map((member) => ({
+            ...member,
+            status: member.status ? member.status.toLowerCase() : 'unknown',
+          }))
+        : [];
+
+        setPayments(normalizedData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  // const payments = [
+  //   {
+  //     id: 1,
+  //     memberId: 'M001',
+  //     memberName: 'Rahul Sharma',
+  //     amount: 2499,
+  //     paymentMethod: 'UPI',
+  //     status: 'completed',
+  //     date: '2024-12-20',
+  //     dueDate: '2024-12-25',
+  //     membershipType: 'Premium',
+  //     transactionId: 'TXN123456789',
+  //     reminderSent: false
+  //   },
+  //   {
+  //     id: 2,
+  //     memberId: 'M002',
+  //     memberName: 'Priya Patel',
+  //     amount: 1499,
+  //     paymentMethod: 'Cash',
+  //     status: 'pending',
+  //     date: null,
+  //     dueDate: '2024-12-22',
+  //     membershipType: 'Standard',
+  //     transactionId: null,
+  //     reminderSent: true
+  //   },
+  //   {
+  //     id: 3,
+  //     memberId: 'M003',
+  //     memberName: 'Amit Kumar',
+  //     amount: 999,
+  //     paymentMethod: 'Card',
+  //     status: 'overdue',
+  //     date: null,
+  //     dueDate: '2024-12-18',
+  //     membershipType: 'Basic',
+  //     transactionId: null,
+  //     reminderSent: true
+  //   }
+  // ];
+
+  const filteredPayments = payments.filter((payment) => {
+    const term = searchTerm.trim().toLowerCase();
+
+    const memberName = payment.memberName?.toLowerCase() || '';
+    const memberId = String(payment.memberId || '').toLowerCase();
+  
+    const matchesSearch = term === '' || memberName.includes(term) || memberId.includes(term);
+  
     const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
+  
     const matchesMethod = selectedPaymentMethod === 'all' || payment.paymentMethod === selectedPaymentMethod;
-    
+  
     return matchesSearch && matchesStatus && matchesMethod;
   });
 
