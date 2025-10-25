@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   Users, 
   Calendar, 
@@ -20,14 +20,31 @@ export default function GymCRMLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const [role, setRole] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
     setRole(storedRole);
   }, []);
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      await fetch('http://localhost:8080/gym/auth/logout?token=' + token, {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('role');
+      setRole(null);
+      router.push('/gym-crm/login');
+    }
+  };
+
 
   const navigation = [
     { name: 'Dashboard', href: '/gym-crm', icon: BarChart3 , roles: ['ADMIN', 'MANAGER', 'RECEPTIONIST'] },
@@ -47,14 +64,24 @@ export default function GymCRMLayout({
       <div className="min-h-screen bg-background">
       {/* Header */}
         <header className="bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Dumbbell className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <span className="text-xl font-bold text-foreground">Gym CRM</span>
+          <div className="max-w-7xl mx-auto flex justify-between items-center h-16">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <Dumbbell className="w-5 h-5 text-primary-foreground" />
               </div>
+              <span className="text-xl font-bold text-foreground">Gym CRM</span>
+            </div>
+
+            <div className="flex space-x-3">
+              <Link href="/gym-crm/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+                Login
+              </Link>
+              <Link
+                href="/gym-crm/signup"
+                className="px-3 py-1 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/80 transition"
+              >
+                Sign Up
+              </Link>
             </div>
           </div>
         </header>
@@ -76,11 +103,39 @@ export default function GymCRMLayout({
             </div>
             <span className="text-xl font-bold text-foreground">Gym CRM</span>
           </div>
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-primary-foreground text-sm font-medium">{role?.[0]}</span>
-            </div>
-            <span className="text-sm font-medium text-foreground">{role}</span>
+
+          <div className="flex items-center space-x-4">
+            {role ? (
+              <>
+                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Bell className="h-6 w-6" />
+                </button>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <span className="text-primary-foreground text-sm font-medium">{role?.[0]}</span>
+                  </div>
+                  <span className="text-sm font-medium text-foreground">{role}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="px-3 py-1 text-sm font-medium bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/80 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex space-x-3">
+                <Link href="/gym-crm/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+                  Login
+                </Link>
+                <Link
+                  href="/gym-crm/signup"
+                  className="px-3 py-1 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/80 transition"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
