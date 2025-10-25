@@ -26,7 +26,13 @@ export default function MembersPage() {
   const recordsPerPage = 10;
 
   useEffect(() => {
-    fetch('http://localhost:8080/gym/members/all')
+    fetch('http://localhost:8080/gym/members/all',{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem('accessToken')
+      }
+    })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch members');
         return res.json();

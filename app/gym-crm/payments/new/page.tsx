@@ -44,7 +44,13 @@ export default function NewPaymentPage() {
 
 
   useEffect(() => {
-    fetch('http://localhost:8080/gym/membership_plans/active')
+      fetch('http://localhost:8080/gym/membership_plans/active',{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        }
+      })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch membership plans');
         return res.json();
@@ -70,8 +76,14 @@ export default function NewPaymentPage() {
     }
 
     const delayDebounce = setTimeout(() => {
-      setLoading(true);
-      fetch(`http://localhost:8080/gym/members/search?searchTerm=${searchTerm}&page=0&size=10`)
+        setLoading(true);
+        fetch(`http://localhost:8080/gym/members/search?searchTerm=${searchTerm}&page=0&size=10`,{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          }
+        })
         .then((res) => {
           if (!res.ok) throw new Error("Failed to fetch members");
           return res.json();
@@ -112,6 +124,7 @@ export default function NewPaymentPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
         },
         body: JSON.stringify({
           ...formData,

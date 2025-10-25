@@ -32,7 +32,13 @@ export default function PaymentsPage() {
     // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split("T")[0];
 
-    fetch(`http://localhost:8080/gym/payments/summary?date=${today}`)
+      fetch(`http://localhost:8080/gym/payments/summary?date=${today}`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        }
+      })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch Payment Summary');
         return res.json();
@@ -49,8 +55,13 @@ export default function PaymentsPage() {
   }, []);
 
   useEffect(() => {
-    
-    fetch(`http://localhost:8080/gym/payments/all_payments`)
+      fetch(`http://localhost:8080/gym/payments/all_payments`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        }
+      })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch All Payments');
         return res.json();

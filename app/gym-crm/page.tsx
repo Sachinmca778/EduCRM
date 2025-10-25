@@ -19,7 +19,13 @@ const [error, setError] = useState(true);
 
   useEffect(() => {
     // call your backend API
-    fetch('http://localhost:8080/gym/members/dashborad/summary')
+      fetch('http://localhost:8080/gym/members/dashborad/summary',{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        }
+      })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch summary');
         return res.json();

@@ -28,6 +28,9 @@ export default function GymLoginPage() {
       }
 
       const data = await res.json();
+      localStorage.setItem('accessToken',data.accessToken);
+      localStorage.setItem('role',data.role);
+
       alert(`Login successfully!`);
     } catch (error) {
       console.error(error);

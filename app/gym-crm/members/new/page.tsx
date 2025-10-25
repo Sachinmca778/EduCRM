@@ -96,7 +96,13 @@ export default function NewMemberPage() {
 
 
   useEffect(() => {
-    fetch('http://localhost:8080/gym/membership_plans/active')
+      fetch('http://localhost:8080/gym/membership_plans/active',{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        }
+      })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch membership plans');
         return res.json();
@@ -121,6 +127,7 @@ export default function NewMemberPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
           // "Authorization": "Bearer " + token // agar JWT laga hai to
         },
         body: JSON.stringify(formData),
