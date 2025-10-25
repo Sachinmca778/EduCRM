@@ -572,3 +572,15 @@ INSERT INTO settings (setting_key, setting_value, description) VALUES
 ('gym_email', 'info@fitlifegym.com', 'Gym email address'),
 ('auto_renewal_days', '7', 'Days before expiry to send renewal reminder'),
 ('max_members', '1000', 'Maximum number of members allowed');
+
+
+
+
+
+
+//Some Changes In Table
+ALTER TABLE members
+ADD COLUMN user_id BIGINT NULL;
+
+ALTER TABLE members
+ADD CONSTRAINT FK_member_user FOREIGN KEY (user_id) REFERENCES users(id);
