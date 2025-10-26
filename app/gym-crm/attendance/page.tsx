@@ -246,14 +246,12 @@ export default function AttendancePage() {
       </div>
     )}
 
-    {/* 👇 Updated Member-only section */}
     {role === 'MEMBER' && (
       <MemberCheckIn memberId="M001" memberName="Rahul Sharma" />
     )}
 
-    {/* Attendance Methods Tabs + History (for admins) */}
+    {/* Attendance Methods Tabs */}
     {allowedRoles.includes(role) && (
-      <>
         <div className="bg-card rounded-xl border border-border">
           <div className="border-b border-border">
             <nav className="-mb-px flex space-x-8 px-6">
@@ -292,8 +290,198 @@ export default function AttendancePage() {
               </button>
             </nav>
           </div>
+
+        <div className="p-6">
+          {activeTab === 'scan' && (
+            <div className="text-center space-y-6">
+              <div className="mx-auto w-64 h-64 bg-muted/50 rounded-xl border-2 border-dashed border-border flex items-center justify-center">
+                <div className="text-center">
+                  <QrCode className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <p className="mt-2 text-sm text-muted-foreground">QR Code Scanner</p>
+                  <p className="text-xs text-muted-foreground">Point camera at member's QR code</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
+                  <QrCode className="h-4 w-4 mr-2" />
+                  Start Scanner
+                </button>
+                <p className="text-sm text-muted-foreground">
+                  Members can also scan their QR code at the entrance
+                </p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'manual' && (
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search member by name or ID..."
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                  />
+                </div>
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Entry
+                </button>
+              </div>
+              
+              <div className="bg-muted/50 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-foreground mb-2">Quick Actions</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <button className="p-2 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors">
+                    Check In
+                  </button>
+                  <button className="p-2 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200 transition-colors">
+                    Check Out
+                  </button>
+                  <button className="p-2 text-sm bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200 transition-colors">
+                    Mark Late
+                  </button>
+                  <button className="p-2 text-sm bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors">
+                    Bulk Entry
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'biometric' && (
+            <div className="text-center space-y-6">
+              <div className="mx-auto w-64 h-64 bg-muted/50 rounded-xl border-2 border-dashed border-border flex items-center justify-center">
+                <div className="text-center">
+                  <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <p className="mt-2 text-sm text-muted-foreground">Biometric Scanner</p>
+                  <p className="text-xs text-muted-foreground">Place finger on scanner</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
+                  <Users className="h-4 w-4 mr-2" />
+                  Start Biometric Scanner
+                </button>
+                <p className="text-sm text-muted-foreground">
+                  Connect biometric device to enable fingerprint scanning
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      </>
+      </div>
+    )}
+
+      {/* Attendance History */}
+    {allowedRoles.includes(role) && (
+      <div className="bg-card rounded-xl border border-border">
+        <div className="px-6 py-4 border-b border-border">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="text-lg font-medium text-foreground">Today's Attendance</h3>
+            <div className="mt-4 sm:mt-0 flex items-center space-x-4">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+              />
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search attendance..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 pr-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Member
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Check In
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Check Out
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Duration
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Method
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-card divide-y divide-border">
+              {filteredAttendance.map((attendance) => (
+                <tr key={attendance.id} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-8 w-8">
+                        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-primary-foreground text-xs font-medium">
+                            {attendance.memberName.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-foreground">{attendance.memberName}</div>
+                        <div className="text-sm text-muted-foreground">{attendance.memberId}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
+                    {attendance.checkIn}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
+                    {attendance.checkOut || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
+                    {attendance.duration || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(attendance.status)}`}>
+                      {attendance.status.charAt(0).toUpperCase() + attendance.status.slice(1)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMethodColor(attendance.method)}`}>
+                      {attendance.method}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2">
+                      {!attendance.checkOut && (
+                        <button className="text-red-600 hover:text-red-800 transition-colors">
+                          Check Out
+                        </button>
+                      )}
+                      <button className="text-primary hover:text-primary/80 transition-colors">
+                        Edit
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     )}
     </div>
   );
