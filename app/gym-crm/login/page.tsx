@@ -37,6 +37,7 @@ export default function GymLoginPage() {
       }
 
       const data = await res.json();
+      localStorage.setItem('session',data);
       localStorage.setItem('accessToken',data.accessToken);
       localStorage.setItem('role',data.role);
 
