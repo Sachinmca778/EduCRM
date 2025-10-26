@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, Dumbbell, ArrowLeft } from "lucide-react";
+import { error } from "console";
 
 export default function GymLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +15,7 @@ export default function GymLoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await fetch("http://localhost:8080/gym/auth/login", {
         method: "POST",
@@ -24,6 +26,8 @@ export default function GymLoginPage() {
       });
 
       if (!res.ok) {
+        alert("login failed due to invalid credentials");
+        setIsLoading(false);
         throw new Error("Something went wrong");
       }
 
@@ -32,16 +36,14 @@ export default function GymLoginPage() {
       localStorage.setItem('role',data.role);
 
       alert(`Login successfully!`);
-    } catch (error) {
-      console.error(error);
-    }
-
-    setIsLoading(true);
-
     setTimeout(() => {
       setIsLoading(false);
       window.location.href = "/gym-crm";
     }, 2000);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (e) => {
