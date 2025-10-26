@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, Dumbbell, ArrowLeft } from "lucide-react";
 import { error } from "console";
+import AlertMessage from "../components/AlertMessage";
 
 export default function GymLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,10 +13,14 @@ export default function GymLoginPage() {
     remember: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
     try {
       const res = await fetch("http://localhost:8080/gym/auth/login", {
         method: "POST",
@@ -26,7 +31,7 @@ export default function GymLoginPage() {
       });
 
       if (!res.ok) {
-        alert("login failed due to invalid credentials");
+        setErrorMessage("Login failed due to invalid credentials");
         setIsLoading(false);
         throw new Error("Something went wrong");
       }
@@ -35,11 +40,11 @@ export default function GymLoginPage() {
       localStorage.setItem('accessToken',data.accessToken);
       localStorage.setItem('role',data.role);
 
-      alert(`Login successfully!`);
-    setTimeout(() => {
-      setIsLoading(false);
-      window.location.href = "/gym-crm";
-    }, 2000);
+      setSuccessMessage("Login successful!");
+      setTimeout(() => {
+        setIsLoading(false);
+        window.location.href = "/gym-crm";
+      }, 2000);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -85,6 +90,10 @@ export default function GymLoginPage() {
               Sign in to your gym account to continue
             </p>
           </div>
+
+          <AlertMessage type="success" message={successMessage} />
+          <AlertMessage type="error" message={errorMessage} />
+
 
           {/* Login Form */}
           <form className="space-y-5" onSubmit={handleSubmit}>
