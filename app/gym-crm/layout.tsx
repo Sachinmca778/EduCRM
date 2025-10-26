@@ -50,7 +50,7 @@ export default function GymCRMLayout({
     { name: 'Dashboard', href: '/gym-crm', icon: BarChart3 , roles: ['ADMIN', 'MANAGER', 'RECEPTIONIST'] },
     { name: 'Members', href: '/gym-crm/members', icon: Users , roles: ['ADMIN', 'MANAGER', 'RECEPTIONIST'] },
     { name: 'Memberships', href: '/gym-crm/memberships', icon: Calendar , roles: ['ADMIN', 'MANAGER'] },
-    { name: 'Attendance', href: '/gym-crm/attendance', icon: UserCheck , roles: ['MEMBER'] },
+    { name: 'Attendance', href: '/gym-crm/attendance', icon: UserCheck , roles: ['ADMIN','MEMBER'] },
     { name: 'Progress Tracking', href: '/gym-crm/progress', icon: TrendingUp , roles: ['ADMIN', 'MANAGER'] },
     { name: 'Trainers', href: '/gym-crm/trainers', icon: Dumbbell , roles: ['ADMIN', 'MANAGER'] },
     { name: 'Staff', href: '/gym-crm/staff', icon: Users , roles: ['ADMIN', 'MANAGER'] },

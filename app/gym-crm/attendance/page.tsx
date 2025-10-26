@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   UserCheck, 
   QrCode, 
@@ -14,10 +14,107 @@ import {
   Filter
 } from 'lucide-react';
 
+
+// New MemberCheckIn component
+function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName: string }) {
+  const [checkedIn, setCheckedIn] = useState(false);
+  const [checkInTime, setCheckInTime] = useState<Date | null>(null);
+  const [timer, setTimer] = useState<string>('00:00:00');
+
+  const todayKey = `checkin-${memberId}-${new Date().toDateString()}`;
+
+  // Load check-in state from localStorage (one check-in per day)
+  useEffect(() => {
+    const stored = localStorage.getItem(todayKey);
+    if (stored) {
+      setCheckedIn(true);
+      setCheckInTime(new Date(stored));
+    }
+  }, [todayKey]);
+
+  // Handle check-in
+  const handleCheckIn = () => {
+    const now = new Date();
+    setCheckedIn(true);
+    setCheckInTime(now);
+    localStorage.setItem(todayKey, now.toISOString());
+  };
+
+  // Handle check-out
+  const handleCheckOut = () => {
+    setCheckedIn(false);
+    setCheckInTime(null);
+    setTimer('00:00:00');
+    localStorage.removeItem(todayKey);
+    alert(`${memberName} checked out successfully!`);
+  };
+
+  // Timer logic
+  useEffect(() => {
+    let interval: NodeJS.Timer;
+    if (checkedIn && checkInTime) {
+      interval = setInterval(() => {
+        const now = new Date();
+        const diff = now.getTime() - checkInTime.getTime();
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        setTimer(
+          `${hours.toString().padStart(2, '0')}:${minutes
+            .toString()
+            .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+        );
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [checkedIn, checkInTime]);
+
+  return (
+    <div className="bg-muted/50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+      <div>
+        <p className="text-sm font-medium text-foreground">{memberName}</p>
+        <p className="text-xs text-muted-foreground">{memberId}</p>
+      </div>
+      <div className="flex items-center space-x-2">
+        {!checkedIn ? (
+          <button
+            onClick={handleCheckIn}
+            className="px-4 py-2 bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors"
+          >
+            Check In
+          </button>
+        ) : (
+          <>
+            <button
+              onClick={handleCheckOut}
+              className="px-4 py-2 bg-red-100 text-red-800 rounded hover:bg-red-200 transition-colors"
+            >
+              Check Out
+            </button>
+            <span className="px-3 py-2 bg-yellow-100 text-yellow-800 rounded font-mono">
+              {timer}
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
 export default function AttendancePage() {
+  const [role, setRole] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('scan');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const allowedRoles = ['ADMIN', 'MANAGER', 'RECEPTIONIST'];
+
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    setRole(storedRole);
+  }, []);
+
 
   const attendanceData = [
     {
@@ -84,6 +181,7 @@ export default function AttendancePage() {
       </div>
 
       {/* Quick Stats */}
+    {allowedRoles.includes(role) && (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all duration-200">
           <div className="flex items-center">
@@ -133,8 +231,44 @@ export default function AttendancePage() {
           </div>
         </div>
       </div>
+    )}
 
-      {/* Attendance Methods Tabs */}
+
+    {role ==='MEMBER' && (
+      <div className="space-y-6">
+        <div className="flex items-center space-x-4">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Search member by name or ID..."
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
+            <Plus className="h-4 w-4 mr-2" />
+            Add Entry
+          </button>
+        </div>
+
+        {/* NEW: Check-in components */}
+        <div className="space-y-2">
+          {filteredAttendance.map(member => (
+            <MemberCheckIn
+              key={member.id}
+              memberId={member.memberId}
+              memberName={member.memberName}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+
+
+    {/* Attendance Methods Tabs */}
+    {allowedRoles.includes(role) && (
       <div className="bg-card rounded-xl border border-border">
         <div className="border-b border-border">
           <nav className="-mb-px flex space-x-8 px-6">
@@ -254,8 +388,10 @@ export default function AttendancePage() {
           )}
         </div>
       </div>
+    )}
 
       {/* Attendance History */}
+    {allowedRoles.includes(role) && (
       <div className="bg-card rounded-xl border border-border">
         <div className="px-6 py-4 border-b border-border">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -363,6 +499,7 @@ export default function AttendancePage() {
           </table>
         </div>
       </div>
+    )}
     </div>
   );
 }
