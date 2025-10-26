@@ -70,45 +70,61 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
   }, [checkedIn, checkInTime]);
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-gray-50 p-6">
-      <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center border border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Member Attendance</h1>
-        <p className="text-sm text-gray-600 mb-6">Track your daily check-in and check-out</p>
+    <div className="min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-blue-50 p-6">
+      <div className="relative bg-white/80 backdrop-blur-md border border-gray-200/60 shadow-lg rounded-2xl w-full max-w-md p-8 transition-all hover:shadow-xl">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-blue-400/10 to-transparent pointer-events-none" />
 
-        <div className="bg-gray-100 rounded-lg p-4 mb-6">
-          <p className="text-base font-medium text-gray-900">{memberName}</p>
-          <p className="text-sm text-gray-500">{memberId}</p>
-        </div>
+        <div className="relative text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
+            Member Check-In
+          </h1>
+          <p className="text-sm text-gray-500 mb-6">
+            Manage your daily attendance seamlessly
+          </p>
 
-        {!checkedIn ? (
-          <button
-            onClick={handleCheckIn}
-            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-all"
-          >
-            <CheckCircle className="w-5 h-5" />
-            Check In
-          </button>
-        ) : (
-          <div className="space-y-4">
-            <div className="bg-yellow-100 text-yellow-800 font-mono py-2 px-4 rounded-lg inline-block">
-              <Clock className="w-4 h-4 inline mr-2" />
-              {timer}
-            </div>
-            <button
-              onClick={handleCheckOut}
-              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition-all"
-            >
-              <XCircle className="w-5 h-5" />
-              Check Out
-            </button>
+          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-5 mb-6 shadow-inner">
+            <p className="text-lg font-semibold text-gray-900">{memberName}</p>
+            <p className="text-sm text-gray-600 mt-1">{memberId}</p>
           </div>
-        )}
 
-        <p className="mt-6 text-xs text-gray-500">
-          {checkedIn && checkInTime
-            ? `Checked in at ${checkInTime.toLocaleTimeString()}`
-            : 'Not checked in yet today'}
-        </p>
+          {!checkedIn ? (
+            <button
+              onClick={handleCheckIn}
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition-all active:scale-95"
+            >
+              <CheckCircle className="w-5 h-5" />
+              Check In
+            </button>
+          ) : (
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 font-mono font-semibold tracking-wider shadow-sm">
+                <Clock className="w-4 h-4 animate-pulse" />
+                {timer}
+              </div>
+
+              <button
+                onClick={handleCheckOut}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold py-3 rounded-xl shadow-md transition-all active:scale-95"
+              >
+                <XCircle className="w-5 h-5" />
+                Check Out
+              </button>
+            </div>
+          )}
+
+          <div className="mt-8 text-xs text-gray-500">
+            {checkedIn && checkInTime ? (
+              <>
+                Checked in at{' '}
+                <span className="font-medium text-gray-700">
+                  {checkInTime.toLocaleTimeString()}
+                </span>
+              </>
+            ) : (
+              'Not checked in yet today'
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
