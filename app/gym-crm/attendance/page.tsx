@@ -17,6 +17,18 @@ import {
 
 // New MemberCheckIn component
 function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName: string }) {
+  const [formData, setFormData] = useState({
+    // Personal Information
+    memberId: '',
+    memberName: '',
+    checkIn: '',
+    checkOut: '',
+    durationMinutes: '',
+    method: '',
+    notes: ''
+  });
+
+  const [message, setMessage] = useState("");
   const [checkedIn, setCheckedIn] = useState(false);
   const [checkInTime, setCheckInTime] = useState<Date | null>(null);
   const [timer, setTimer] = useState<string>('00:00:00');
@@ -33,8 +45,33 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
   }, [todayKey]);
 
   // Handle check-in
-  const handleCheckIn = () => {
+  const handleCheckIn = async (e) => {
+    const userId = localStorage.getItem('userId');
+    const memberId = localStorage.getItem('memberId');
+
     const now = new Date();
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`http://localhost:8080/gym/attendance/check_in${memberId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        },
+        body:JSON.stringify({}),
+      });
+
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const data = await res.json();
+      setMessage(`Member created successfully. Code: ${data.memberCode}`);
+    } catch (error) {
+      console.error(error);
+      setMessage("Error creating member");
+    }
     setCheckedIn(true);
     setCheckInTime(now);
     localStorage.setItem(todayKey, now.toISOString());
@@ -76,7 +113,7 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
 
         <div className="relative text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
-            Member Check-In
+            Mark Your Attendence
           </h1>
           <p className="text-sm text-gray-500 mb-6">
             Manage your daily attendance seamlessly
@@ -138,6 +175,8 @@ export default function AttendancePage() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const allowedRoles = ['ADMIN', 'MANAGER', 'RECEPTIONIST'];
 
+  const name = localStorage.getItem('name');
+  const id = `ID : ${localStorage.getItem('userId')}`;
 
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
@@ -263,7 +302,7 @@ export default function AttendancePage() {
     )}
 
     {role === 'MEMBER' && (
-      <MemberCheckIn memberId="M001" memberName="Rahul Sharma" />
+      <MemberCheckIn memberId={id} memberName={name} />
     )}
 
     {/* Attendance Methods Tabs */}
