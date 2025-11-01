@@ -46,8 +46,8 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
 
   // Handle check-in
   const handleCheckIn = async (e) => {
-    const userId = localStorage.getItem('userId');
-    const memberId = localStorage.getItem('memberId');
+    const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
+    const memberId = typeof window !== "undefined" ? localStorage.getItem('memberId') : null;
 
     const now = new Date();
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
@@ -175,11 +175,11 @@ export default function AttendancePage() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const allowedRoles = ['ADMIN', 'MANAGER', 'RECEPTIONIST'];
 
-  const name = localStorage.getItem('name');
-  const id = `ID : ${localStorage.getItem('userId')}`;
+  const name = typeof window !== "undefined" ? localStorage.getItem('name') : null;
+  const id = `ID : ${typeof window !== "undefined" ? localStorage.getItem('userId') : null}`;
 
   useEffect(() => {
-    const storedRole = localStorage.getItem('role');
+    const storedRole = typeof window !== "undefined" ? localStorage.getItem('role') : null;
     setRole(storedRole);
   }, []);
 

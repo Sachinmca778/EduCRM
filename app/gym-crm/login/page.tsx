@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, Dumbbell, ArrowLeft } from "lucide-react";
 import { error } from "console";
@@ -37,11 +37,16 @@ export default function GymLoginPage() {
       }
 
       const data = await res.json();
-      localStorage.setItem('userId', data.userId);
-      localStorage.setItem('name', data.name);
-      localStorage.setItem('memberId',data.memberId)
-      localStorage.setItem('accessToken',data.accessToken);
-      localStorage.setItem('role',data.role);
+      useEffect(() => {
+        if (typeof window !== "undefined") {
+          localStorage.setItem('userId', data.userId);
+          localStorage.setItem('name', data.name);
+          localStorage.setItem('memberId', data.memberId);
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('role', data.role);
+        }
+      }, [data]);
+      
 
       setSuccessMessage("Login successful!");
       setTimeout(() => {
