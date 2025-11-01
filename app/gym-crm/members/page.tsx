@@ -26,11 +26,12 @@ export default function MembersPage() {
   const recordsPerPage = 10;
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     fetch('http://localhost:8080/gym/members/all',{
       method:'GET',
       headers:{
         'Content-Type':'application/json',
-        'Authorization':'Bearer '+localStorage.getItem('accessToken')
+        'Authorization':'Bearer '+ token
       }
     })
       .then((res) => {

@@ -50,14 +50,14 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
     const memberId = localStorage.getItem('memberId');
 
     const now = new Date();
-    e.preventDefault();
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
     try {
-      const res = await fetch(`http://localhost:8080/gym/attendance/check_in${memberId}`, {
+      const res = await fetch(`http://localhost:8080/gym/attendance/check_in/${memberId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         },
         body:JSON.stringify({}),
       });
@@ -88,7 +88,7 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
 
   // Timer logic
   useEffect(() => {
-    let interval: NodeJS.Timer;
+    let interval: NodeJS.Timeout;
     if (checkedIn && checkInTime) {
       interval = setInterval(() => {
         const now = new Date();

@@ -13,17 +13,18 @@ import {
 import { useEffect,useState } from 'react';
 
 export default function GymCRMDashboard() {
-const [summary, setSummary] = useState({});
+const [summary, setSummary] = useState<any>({});
 const [loading, setLoading] = useState(true);
-const [error, setError] = useState(true);
+const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     // call your backend API
       fetch('http://localhost:8080/gym/members/dashborad/summary',{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         }
       })
       .then(res => {

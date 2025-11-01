@@ -96,11 +96,12 @@ export default function NewMemberPage() {
 
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
       fetch('http://localhost:8080/gym/membership_plans/active',{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         }
       })
       .then((res) => {
@@ -121,13 +122,14 @@ export default function NewMemberPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
     try {
       const res = await fetch("http://localhost:8080/gym/members/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
           // "Authorization": "Bearer " + token // agar JWT laga hai to
         },
         body: JSON.stringify(formData),

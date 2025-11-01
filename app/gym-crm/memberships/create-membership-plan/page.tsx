@@ -21,13 +21,14 @@ export default function CreateMembershipPlan() {
   };
 
   const handleSubmit = async (e) => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:8080/gym/membership_plans/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         },
         body: JSON.stringify({
           ...formData,

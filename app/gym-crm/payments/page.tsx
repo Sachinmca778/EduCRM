@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function PaymentsPage() {
-  const [paymentSummary, setPaymentSummary] = useState<any[]>([]);
+  const [paymentSummary, setPaymentSummary] = useState<any>({});
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,12 +31,13 @@ export default function PaymentsPage() {
   useEffect(() => {
     // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split("T")[0];
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
       fetch(`http://localhost:8080/gym/payments/summary?date=${today}`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         }
       })
       .then((res) => {
@@ -55,11 +56,12 @@ export default function PaymentsPage() {
   }, []);
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
       fetch(`http://localhost:8080/gym/payments/all_payments`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         }
       })
       .then((res) => {

@@ -44,11 +44,12 @@ export default function NewPaymentPage() {
 
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
       fetch('http://localhost:8080/gym/membership_plans/active',{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         }
       })
       .then((res) => {
@@ -76,12 +77,13 @@ export default function NewPaymentPage() {
     }
 
     const delayDebounce = setTimeout(() => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
         setLoading(true);
         fetch(`http://localhost:8080/gym/members/search?searchTerm=${searchTerm}&page=0&size=10`,{
           method:'GET',
           headers:{
             'Content-Type':'application/json',
-            'Authorization':'Bearer '+localStorage.getItem('accessToken')
+            'Authorization':'Bearer '+ token
           }
         })
         .then((res) => {
@@ -118,13 +120,14 @@ export default function NewPaymentPage() {
   };
 
   const handleSubmit = async (e)  => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:8080/gym/payments/create_record", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization':'Bearer '+localStorage.getItem('accessToken')
+          'Authorization':'Bearer '+ token
         },
         body: JSON.stringify({
           ...formData,
