@@ -22,9 +22,11 @@ export default function CreateMembershipPlan() {
 
   const handleSubmit = async (e) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/gym/membership_plans/create", {
+      const response = await fetch(`${API_BASE_URL}/gym/membership_plans/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -21,8 +21,10 @@ export default function GymLoginPage() {
     setIsLoading(true);
     setSuccessMessage("");
     setErrorMessage("");
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     try {
-      const res = await fetch("http://localhost:8080/gym/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/gym/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +39,6 @@ export default function GymLoginPage() {
       }
 
       const data = await res.json();
-      useEffect(() => {
         if (typeof window !== "undefined") {
           localStorage.setItem('userId', data.userId);
           localStorage.setItem('name', data.name);
@@ -45,8 +46,6 @@ export default function GymLoginPage() {
           localStorage.setItem('accessToken', data.accessToken);
           localStorage.setItem('role', data.role);
         }
-      }, [data]);
-      
 
       setSuccessMessage("Login successful!");
       setTimeout(() => {

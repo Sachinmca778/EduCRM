@@ -51,9 +51,10 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
 
     const now = new Date();
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     try {
-      const res = await fetch(`http://localhost:8080/gym/attendance/check_in/${memberId}`, {
+      const res = await fetch(`${API_BASE_URL}/gym/attendance/check_in/${memberId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

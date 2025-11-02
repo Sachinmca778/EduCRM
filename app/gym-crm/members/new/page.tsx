@@ -97,7 +97,9 @@ export default function NewMemberPage() {
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-      fetch('http://localhost:8080/gym/membership_plans/active',{
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+      fetch(`${API_BASE_URL}/gym/membership_plans/active`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
@@ -123,9 +125,10 @@ export default function NewMemberPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     try {
-      const res = await fetch("http://localhost:8080/gym/members/create", {
+      const res = await fetch(`${API_BASE_URL}/gym/members/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -19,8 +19,10 @@ const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     // call your backend API
-      fetch('http://localhost:8080/gym/members/dashborad/summary',{
+      fetch(`${API_BASE_URL}/gym/members/dashborad/summary`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',

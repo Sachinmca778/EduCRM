@@ -32,8 +32,9 @@ export default function PaymentsPage() {
     // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split("T")[0];
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-      fetch(`http://localhost:8080/gym/payments/summary?date=${today}`,{
+      fetch(`${API_BASE_URL}/gym/payments/summary?date=${today}`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
@@ -57,7 +58,8 @@ export default function PaymentsPage() {
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-      fetch(`http://localhost:8080/gym/payments/all_payments`,{
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+      fetch(`${API_BASE_URL}/gym/payments/all_payments`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',

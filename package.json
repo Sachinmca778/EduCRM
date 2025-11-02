@@ -10,16 +10,17 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
+    "date-fns": "^3.6.0",
+    "dotenv": "^17.2.3",
+    "framer-motion": "^11.10.0",
     "lucide-react": "^0.522.0",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.4",
     "react-hook-form": "^7.51.0",
     "react-hot-toast": "^2.4.1",
-    "date-fns": "^3.6.0",
-    "framer-motion": "^11.10.0",
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "recharts": "^2.15.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

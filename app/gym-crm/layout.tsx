@@ -31,8 +31,10 @@ export default function GymCRMLayout({
 
   const handleLogout = async () => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     try {
-      await fetch('http://localhost:8080/gym/auth/logout?token=' + token, {
+      await fetch(`${API_BASE_URL}/gym/auth/logout?token=` + token, {
         method: 'POST',
       });
     } catch (error) {

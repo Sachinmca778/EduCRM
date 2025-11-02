@@ -27,7 +27,9 @@ export default function MembersPage() {
 
   useEffect(() => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-    fetch('http://localhost:8080/gym/members/all',{
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    fetch(`${API_BASE_URL}/gym/members/all`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json',
