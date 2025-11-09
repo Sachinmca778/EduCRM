@@ -33,7 +33,10 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
   const [checkInTime, setCheckInTime] = useState<Date | null>(null);
   const [timer, setTimer] = useState<string>('00:00:00');
 
-  const todayKey = `checkin-${memberId}-${new Date().toDateString()}`;
+  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const todayKey = `checkin-${memberId}`;
 
   // Load check-in state from localStorage (one check-in per day)
   useEffect(() => {
@@ -50,8 +53,6 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
     const memberId = typeof window !== "undefined" ? localStorage.getItem('memberId') : null;
 
     const now = new Date();
-    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     try {
       const res = await fetch(`${API_BASE_URL}/gym/attendance/check_in/${memberId}`, {
@@ -68,22 +69,51 @@ function MemberCheckIn({ memberId, memberName }: { memberId: string; memberName:
       }
 
       const data = await res.json();
+      if (typeof window !== "undefined") {
+        localStorage.setItem('attendence_id', data.id);
+      }
       setMessage(`Member created successfully. Code: ${data.memberCode}`);
     } catch (error) {
-      console.error(error);
       setMessage("Error creating member");
     }
     setCheckedIn(true);
     setCheckInTime(now);
-    localStorage.setItem(todayKey, now.toISOString());
+    if (typeof window !== "undefined") {
+      localStorage.setItem(todayKey, now.toISOString());
+    }
   };
 
   // Handle check-out
-  const handleCheckOut = () => {
+  const handleCheckOut = async (e) => {
+    const attendenceId = typeof window !== "undefined" ? localStorage.getItem('attendence_id') : null;
+    try {
+      const res = await fetch(`${API_BASE_URL}/gym/attendance/check_out/${attendenceId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization':'Bearer '+ token
+        },
+        body:JSON.stringify({}),
+      });
+
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const data = await res.json();
+      if (typeof window !== "undefined") {
+        localStorage.removeItem('attendence_id');
+      }
+      setMessage(`Member Checkout successfully. Code: ${data.memberCode}`);
+    } catch (error) {
+      setMessage("Error creating member");
+    }
     setCheckedIn(false);
     setCheckInTime(null);
     setTimer('00:00:00');
-    localStorage.removeItem(todayKey);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(todayKey);
+    }
     alert(`${memberName} checked out successfully!`);
   };
 

@@ -213,3 +213,50 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ for Educational Institutions Worldwide**
+
+diff --git a/next.config.js b/next.config.js
+index 267877b..ebfa9f5 100644
+--- a/next.config.js
++++ b/next.config.js
+@@ -4,9 +4,6 @@ const nextConfig = {
+   trailingSlash: true,
+   images: {
+     unoptimized: true
+-  },
+-  experimental: {
+-    appDir: true
+   }
+ }
+
+Rebuild :
+mvn clean package -DskipTests
+
+Run :
+java -jar target/gym-crm-backend-1.0.0.jar
+
+Make Backend Run in Background (Recommended for EC2)
+sudo nano /etc/systemd/system/gym-backend.service
+
+paste : 
+[Unit]
+Description=Gym CRM Spring Boot Backend
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/home/gym-backend
+ExecStart=/usr/bin/java -jar /home/gym-backend/target/gym-crm-backend-1.0.0.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+Enable:
+sudo systemctl daemon-reload
+sudo systemctl start gym-backend
+sudo systemctl enable gym-backend
+
+check logs :
+sudo journalctl -u gym-backend -f
