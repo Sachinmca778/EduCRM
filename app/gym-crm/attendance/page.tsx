@@ -205,6 +205,11 @@ export default function AttendancePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const allowedRoles = ['ADMIN', 'MANAGER', 'RECEPTIONIST'];
+  const [attendenceSummary , setAttendenceSummary] = useState<any>({});
+  const [attendanceData, setAttendenceData] = useState<any[]>([]);
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const name = typeof window !== "undefined" ? localStorage.getItem('name') : null;
   const id = `ID : ${typeof window !== "undefined" ? localStorage.getItem('userId') : null}`;
@@ -214,39 +219,49 @@ export default function AttendancePage() {
     setRole(storedRole);
   }, []);
 
+  useEffect(() => {
+      fetch(`${API_BASE_URL}/gym/attendance/summary`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+ token
+        }
+      })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch membership plans');
+        return res.json();
+      })
+      .then((data) => {
+        setAttendenceSummary(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []); 
 
-  const attendanceData = [
-    {
-      id: 1,
-      memberId: 'M001',
-      memberName: 'Rahul Sharma',
-      checkIn: '2024-12-20 06:30:00',
-      checkOut: '2024-12-20 08:15:00',
-      duration: '1h 45m',
-      status: 'completed',
-      method: 'QR Code'
-    },
-    {
-      id: 2,
-      memberId: 'M002',
-      memberName: 'Priya Patel',
-      checkIn: '2024-12-20 07:00:00',
-      checkOut: null,
-      duration: null,
-      status: 'checked-in',
-      method: 'Manual'
-    },
-    {
-      id: 3,
-      memberId: 'M003',
-      memberName: 'Amit Kumar',
-      checkIn: '2024-12-20 06:45:00',
-      checkOut: '2024-12-20 08:00:00',
-      duration: '1h 15m',
-      status: 'completed',
-      method: 'Biometric'
-    }
-  ];
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/gym/attendance/date`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+ token
+      }
+    })
+    .then((res) => {
+      if (!res.ok) throw new Error('Failed to fetch membership plans');
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data,'fg');
+      setAttendenceData(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}, []); 
+
+  const formatMinutesToHM = m => !m ? "0m" : `${Math.floor(m/60)}h ${m%60}m`;
+
 
   const filteredAttendance = attendanceData.filter(attendance =>
     attendance.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -261,6 +276,15 @@ export default function AttendancePage() {
       default: return 'bg-muted text-muted-foreground';
     }
   };
+
+  const getAttendanceStatus = (attendance) => {
+    if (attendance.checkIn && attendance.checkOut) {
+      return "complete";
+    } else if (attendance.checkIn && !attendance.checkOut) {
+      return "checked-in";
+    }
+  };
+  
 
   const getMethodColor = (method: string) => {
     switch (method) {
@@ -289,7 +313,7 @@ export default function AttendancePage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Total Members</p>
-              <p className="text-2xl font-semibold text-foreground">1,234</p>
+              <p className="text-2xl font-semibold text-foreground">{attendenceSummary.activeMembers ?? 0}</p>
             </div>
           </div>
         </div>
@@ -301,7 +325,7 @@ export default function AttendancePage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Present Today</p>
-              <p className="text-2xl font-semibold text-foreground">89</p>
+              <p className="text-2xl font-semibold text-foreground">{attendenceSummary.dailyAttendanceCount ?? 0 }</p>
             </div>
           </div>
         </div>
@@ -313,7 +337,7 @@ export default function AttendancePage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Absent Today</p>
-              <p className="text-2xl font-semibold text-foreground">45</p>
+              <p className="text-2xl font-semibold text-foreground">{attendenceSummary.dailyAbsentMember ?? 0}</p>
             </div>
           </div>
         </div>
@@ -325,7 +349,7 @@ export default function AttendancePage() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-muted-foreground">Avg. Duration</p>
-              <p className="text-2xl font-semibold text-foreground">1h 32m</p>
+              <p className="text-2xl font-semibold text-foreground">{formatMinutesToHM(attendenceSummary?.dailyAverageDuration || 0)}</p>
             </div>
           </div>
         </div>
@@ -538,11 +562,11 @@ export default function AttendancePage() {
                     {attendance.checkOut || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
-                    {attendance.duration || '-'}
+                    {attendance.durationMinutes || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(attendance.status)}`}>
-                      {attendance.status.charAt(0).toUpperCase() + attendance.status.slice(1)}
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(getAttendanceStatus(attendance))}`}>
+                      {getAttendanceStatus(attendance).charAt(0).toUpperCase() + getAttendanceStatus(attendance).slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
