@@ -220,6 +220,10 @@ export default function AttendancePage() {
   }, []);
 
   useEffect(() => {
+
+      if (!role) return; 
+      if (!allowedRoles.includes(role)) return;
+
       fetch(`${API_BASE_URL}/gym/attendance/summary`,{
         method:'GET',
         headers:{
@@ -237,9 +241,13 @@ export default function AttendancePage() {
       .catch((err) => {
         console.error(err);
       });
-  }, []); 
+  }, [role]); 
 
   useEffect(() => {
+
+    if (!role) return; 
+    if (!allowedRoles.includes(role)) return;
+
     fetch(`${API_BASE_URL}/gym/attendance/date`,{
       method:'GET',
       headers:{
@@ -258,7 +266,7 @@ export default function AttendancePage() {
     .catch((err) => {
       console.error(err);
     });
-}, []); 
+}, [role]); 
 
   const formatMinutesToHM = m => !m ? "0m" : `${Math.floor(m/60)}h ${m%60}m`;
 
