@@ -14,7 +14,6 @@ export default function CreateGym() {
     city: "",
     state: "",
     pincode: "",
-    isActive: true,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -172,17 +171,6 @@ export default function CreateGym() {
           />
         </div>
 
-        {/* Is Active */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="isActive"
-            className="mr-2"
-            checked={formData.isActive}
-            onChange={handleChange}
-          />
-          <label className="text-sm font-medium text-foreground">Is Active</label>
-        </div>
 
         {/* Submit Button */}
         <div className="flex justify-end">

@@ -14,7 +14,7 @@ interface Gym {
   city?: string;
   state?: string;
   pincode?: string;
-  isActive: boolean;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -147,11 +147,11 @@ export default function GymsPage() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    gym.isActive
+                    gym.isActive !== false
                       ? 'bg-green-100 text-green-800'
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {gym.isActive ? 'Active' : 'Inactive'}
+                    {gym.isActive !== false ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </div>
