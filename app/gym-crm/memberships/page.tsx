@@ -34,6 +34,8 @@ export default function MembershipPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<MemberMembership>({
     member_id: 0,
@@ -48,42 +50,56 @@ export default function MembershipPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    setMembers([
-      { id: 101, name: 'John Doe', email: 'john@example.com', phone: '9876543210' },
-      { id: 102, name: 'Jane Smith', email: 'jane@example.com', phone: '9123456780' },
-      { id: 103, name: 'Robert Brown', email: 'robert@example.com', phone: '9988776655' },
-      { id: 104, name: 'Vishal Kumar', email: 'vishal@example.com', phone: '9876500000' },
-    ]);
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-    setPlans([
-      {
-        id: 1,
-        name: 'Basic',
-        description: 'Basic Gym Plan with 1 personal session',
-        duration_months: 1,
-        price: 999,
-        features: ['Gym access', '1 personal training session'],
-        is_active: true
-      },
-      {
-        id: 2,
-        name: 'Standard',
-        description: 'Standard Plan with group classes & 3 personal sessions',
-        duration_months: 3,
-        price: 1499,
-        features: ['Gym access', '3 personal sessions', 'Group classes'],
-        is_active: true
-      },
-      {
-        id: 3,
-        name: 'Premium',
-        description: 'Premium Plan with unlimited access & diet consultation',
-        duration_months: 12,
-        price: 2499,
-        features: ['Unlimited gym access', 'Monthly personal training', 'Diet consultation'],
-        is_active: true
+    // Fetch members
+    fetch(`${API_BASE_URL}/gym/members/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
       }
-    ]);
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch members');
+        return res.json();
+      })
+      .then((data) => {
+        const formattedMembers = data.map((member: any) => ({
+          id: member.id,
+          name: `${member.firstName} ${member.lastName}`,
+          email: member.email,
+          phone: member.phone
+        }));
+        setMembers(formattedMembers);
+      })
+      .catch((err) => {
+        console.error('Error fetching members:', err);
+        setError('Failed to load members');
+      });
+
+    // Fetch plans
+    fetch(`${API_BASE_URL}/gym/membership_plans/active`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch plans');
+        return res.json();
+      })
+      .then((data) => {
+        setPlans(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching plans:', err);
+        setError('Failed to load membership plans');
+        setLoading(false);
+      });
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

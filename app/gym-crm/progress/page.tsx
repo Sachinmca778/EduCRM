@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { 
   TrendingUp, 
   Search, 
@@ -20,67 +20,62 @@ export default function ProgressPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMember, setSelectedMember] = useState('all');
   const [selectedMetric, setSelectedMetric] = useState('weight');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [members, setMembers] = useState<any[]>([]);
 
-  const members = [
-    {
-      id: 1,
-      name: 'Rahul Sharma',
-      membershipType: 'Premium',
-      startDate: '2024-01-15',
-      currentWeight: 75.5,
-      targetWeight: 70.0,
-      height: 175,
-      bmi: 24.7,
-      bodyFat: 18.5,
-      muscleMass: 45.2,
-      measurements: {
-        chest: 95,
-        waist: 82,
-        hips: 98,
-        biceps: 32,
-        thighs: 58
-      },
-      progress: [
-        { date: '2024-01-15', weight: 80.0, bmi: 26.1, bodyFat: 22.0 },
-        { date: '2024-02-15', weight: 78.5, bmi: 25.6, bodyFat: 20.5 },
-        { date: '2024-03-15', weight: 77.0, bmi: 25.1, bodyFat: 19.5 },
-        { date: '2024-04-15', weight: 76.0, bmi: 24.8, bodyFat: 19.0 },
-        { date: '2024-05-15', weight: 75.5, bmi: 24.7, bodyFat: 18.5 }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Priya Patel',
-      membershipType: 'Standard',
-      startDate: '2024-02-01',
-      currentWeight: 58.0,
-      targetWeight: 55.0,
-      height: 162,
-      bmi: 22.1,
-      bodyFat: 25.0,
-      muscleMass: 38.5,
-      measurements: {
-        chest: 82,
-        waist: 68,
-        hips: 88,
-        biceps: 26,
-        thighs: 52
-      },
-      progress: [
-        { date: '2024-02-01', weight: 62.0, bmi: 23.6, bodyFat: 28.0 },
-        { date: '2024-03-01', weight: 60.5, bmi: 23.0, bodyFat: 26.5 },
-        { date: '2024-04-01', weight: 59.0, bmi: 22.5, bodyFat: 25.5 },
-        { date: '2024-05-01', weight: 58.5, bmi: 22.3, bodyFat: 25.0 },
-        { date: '2024-06-01', weight: 58.0, bmi: 22.1, bodyFat: 25.0 }
-      ]
-    }
-  ];
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    fetch(`${API_BASE_URL}/gym/members/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch members');
+        return res.json();
+      })
+      .then((data) => {
+        // Format the data to match the expected structure
+        const formattedMembers = data.map((member: any) => ({
+          id: member.id,
+          name: `${member.firstName} ${member.lastName}`,
+          membershipType: member.membershipType || 'N/A',
+          startDate: member.joinDate || 'N/A',
+          currentWeight: 0, // Will be populated from progress data
+          targetWeight: 0, // Will be populated from progress data
+          height: 0, // Will be populated from progress data
+          bmi: 0, // Will be populated from progress data
+          bodyFat: 0, // Will be populated from progress data
+          muscleMass: 0, // Will be populated from progress data
+          measurements: {
+            chest: 0,
+            waist: 0,
+            hips: 0,
+            biceps: 0,
+            thighs: 0
+          },
+          progress: [] // Will be populated from progress API
+        }));
+        setMembers(formattedMembers);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching members:', err);
+        setError('Failed to load members');
+        setLoading(false);
+      });
+  }, []);
 
   const filteredMembers = members.filter(member =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const selectedMemberData = selectedMember === 'all' ? members[0] : members.find(m => m.id.toString() === selectedMember);
+  const selectedMemberData = selectedMember === 'all' ? (members.length > 0 ? members[0] : null) : members.find(m => m.id.toString() === selectedMember);
 
   const getBMICategory = (bmi: number) => {
     if (bmi < 18.5) return { category: 'Underweight', color: 'text-blue-600' };
@@ -263,7 +258,7 @@ export default function ProgressPage() {
       )}
 
       {/* Progress Chart */}
-      {selectedMemberData && (
+      {selectedMemberData && !loading && (
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-medium text-foreground">Progress Over Time</h3>

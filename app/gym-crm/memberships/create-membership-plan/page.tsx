@@ -6,10 +6,10 @@ export default function CreateMembershipPlan() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    duration_months: "",
+    durationMonths: "",
     price: "",
     features: "",
-    is_active: false,
+    isActive: true,
   });
 
   const handleChange = (e) => {
@@ -32,10 +32,7 @@ export default function CreateMembershipPlan() {
           "Content-Type": "application/json",
           'Authorization':'Bearer '+ token
         },
-        body: JSON.stringify({
-          ...formData,
-          features: JSON.parse(formData.features || "[]"), // Parse features as JSON
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -88,10 +85,10 @@ export default function CreateMembershipPlan() {
           <label className="block text-sm font-medium text-foreground mb-2">Duration (Months) *</label>
           <input
             type="number"
-            name="duration_months"
+            name="durationMonths"
             className="block w-full rounded-md border border-border p-2 text-sm"
             placeholder="Enter duration in months"
-            value={formData.duration_months}
+            value={formData.durationMonths}
             onChange={handleChange}
             required
           />
@@ -128,9 +125,9 @@ export default function CreateMembershipPlan() {
         <div className="flex items-center">
           <input
             type="checkbox"
-            name="is_active"
+            name="isActive"
             className="mr-2"
-            checked={formData.is_active}
+            checked={formData.isActive}
             onChange={handleChange}
           />
           <label className="text-sm font-medium text-foreground">Is Active</label>

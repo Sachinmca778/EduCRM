@@ -95,7 +95,7 @@ export default function GymSignupPage() {
       <div className="flex-1 flex items-center justify-center px-6 sm:px-8 lg:px-10 py-16 bg-background">
         <div className="max-w-md w-full space-y-10 bg-card shadow-xl rounded-2xl p-8 border border-border/30">
           {/* Header */}
-          <div className="text-center space-y-3">
+          <div className="text-left space-y-3">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"

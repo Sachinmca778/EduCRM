@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Dumbbell, 
@@ -22,57 +22,52 @@ export default function TrainersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSpecialization, setFilterSpecialization] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [trainers, setTrainers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const trainers = [
-    {
-      id: 1,
-      name: 'Rajesh Kumar',
-      email: 'rajesh.kumar@gym.com',
-      phone: '+91 98765 43210',
-      specialization: 'Weight Training',
-      experience: '8 years',
-      certifications: ['ACE Certified', 'ISSA Personal Trainer'],
-      rating: 4.8,
-      status: 'active',
-      assignedMembers: 24,
-      schedule: 'Mon-Fri: 6AM-2PM, Sat: 6AM-12PM',
-      location: 'Main Gym Floor',
-      bio: 'Specialized in strength training and muscle building programs. Expert in Olympic lifting and powerlifting techniques.',
-      hourlyRate: 800
-    },
-    {
-      id: 2,
-      name: 'Priya Sharma',
-      email: 'priya.sharma@gym.com',
-      phone: '+91 98765 43211',
-      specialization: 'Yoga & Flexibility',
-      experience: '6 years',
-      certifications: ['RYT 200', 'Pilates Certified'],
-      rating: 4.9,
-      status: 'active',
-      assignedMembers: 18,
-      schedule: 'Mon-Sat: 7AM-1PM, 5PM-9PM',
-      location: 'Yoga Studio',
-      bio: 'Certified yoga instructor specializing in Vinyasa flow, meditation, and flexibility training. Helps members achieve mind-body balance.',
-      hourlyRate: 600
-    },
-    {
-      id: 3,
-      name: 'Amit Patel',
-      email: 'amit.patel@gym.com',
-      phone: '+91 98765 43212',
-      specialization: 'Cardio & HIIT',
-      experience: '5 years',
-      certifications: ['NASM Certified', 'CrossFit Level 1'],
-      rating: 4.7,
-      status: 'active',
-      assignedMembers: 22,
-      schedule: 'Mon-Fri: 2PM-10PM, Sun: 8AM-4PM',
-      location: 'Cardio Zone',
-      bio: 'High-energy trainer specializing in cardiovascular fitness, HIIT workouts, and endurance training. Motivates members to push their limits.',
-      hourlyRate: 700
-    }
-  ];
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    fetch(`${API_BASE_URL}/trainers/active`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch trainers');
+        return res.json();
+      })
+      .then((data) => {
+        // Format the data to match the expected structure
+        const formattedTrainers = data.map((trainer: any) => ({
+          id: trainer.id,
+          name: `${trainer.firstName} ${trainer.lastName}`,
+          email: trainer.email,
+          phone: trainer.phone,
+          specialization: trainer.specialization || 'General Fitness',
+          experience: trainer.experienceYears ? `${trainer.experienceYears} years` : 'N/A',
+          certifications: trainer.certifications || [],
+          rating: trainer.rating || 0,
+          status: trainer.status || 'active',
+          assignedMembers: trainer.assignedMembersCount || 0,
+          schedule: trainer.schedule || 'TBD',
+          location: trainer.location || 'Main Gym',
+          bio: trainer.bio || 'Professional fitness trainer',
+          hourlyRate: trainer.hourlyRate || 0
+        }));
+        setTrainers(formattedTrainers);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching trainers:', err);
+        setError('Failed to load trainers');
+        setLoading(false);
+      });
+  }, []);
 
   const filteredTrainers = trainers.filter(trainer => {
     const matchesSearch = trainer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
