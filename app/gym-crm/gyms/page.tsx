@@ -179,7 +179,7 @@ export default function GymsPage() {
 
               <div className="flex justify-end space-x-2">
                 <Link
-                  href={`/gym-crm/gyms/${gym.id}/edit`}
+                  href={`/gym-crm/gyms/create?id=${gym.id}`}
                   className="inline-flex items-center px-3 py-1 text-sm font-medium text-primary hover:bg-primary/10 rounded-md"
                 >
                   <Edit className="h-4 w-4 mr-1" />
