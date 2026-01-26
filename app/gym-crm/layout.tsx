@@ -50,6 +50,7 @@ export default function GymCRMLayout({
 
   const navigation = [
     { name: 'Dashboard', href: '/gym-crm', icon: BarChart3 , roles: ['ADMIN', 'MANAGER', 'RECEPTIONIST'] },
+    { name: 'Gyms', href: '/gym-crm/gyms', icon: Dumbbell , roles: ['ADMIN', 'MANAGER'] },
     { name: 'Members', href: '/gym-crm/members', icon: Users , roles: ['ADMIN', 'MANAGER', 'RECEPTIONIST'] },
     { name: 'Memberships', href: '/gym-crm/memberships', icon: Calendar , roles: ['ADMIN', 'MANAGER'] },
     { name: 'Attendance', href: '/gym-crm/attendance', icon: UserCheck , roles: ['ADMIN','MEMBER'] },
