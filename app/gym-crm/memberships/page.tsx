@@ -8,7 +8,7 @@ interface MembershipPlan {
   id: number;
   name: string;
   description?: string;
-  duration_months: number;
+  durationMonths: number;
   price: number;
   features?: string[];
   is_active?: boolean;
@@ -122,20 +122,60 @@ export default function MembershipPage() {
   };
 
   const calculateEndDate = () => {
-    const plan = plans.find(p => p.id === formData.plan_id);
+    const plan = plans.find(p => p.id === Number(formData.plan_id));
     if (plan && formData.start_date) {
       const start = new Date(formData.start_date);
       const end = new Date(start);
-      end.setMonth(end.getMonth() + plan.duration_months);
+      end.setMonth(end.getMonth() + plan.durationMonths);
       return end.toISOString().split('T')[0];
     }
     return '';
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setMessage(`Membership assigned to ${members.find(m => m.id === formData.member_id)?.name}. End date: ${calculateEndDate()}`);
+
+    const endDate = calculateEndDate();
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/gym/memberships/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          memberId: formData.member_id,
+          planId: formData.plan_id,
+          startDate: formData.start_date,
+          endDate: endDate,
+          amountPaid: formData.amount_paid,
+          autoRenewal: formData.auto_renewal
+        })
+      });
+
+      if (response.ok) {
+        setMessage(`Membership assigned to ${members.find(m => m.id === formData.member_id)?.name}. End date: ${endDate}`);
+        setFormData({
+          member_id: 0,
+          plan_id: 0,
+          start_date: '',
+          end_date: '',
+          amount_paid: 0,
+          auto_renewal: false
+        });
+        setSearchTerm('');
+      } else {
+        const errorData = await response.json();
+        setMessage(`Error: ${errorData.message || 'Failed to create membership'}`);
+      }
+    } catch (error) {
+      console.error('Error creating membership:', error);
+      setMessage('Error: Failed to create membership');
+    }
   };
 
   const filteredMembers = members.filter(m =>
@@ -250,7 +290,7 @@ export default function MembershipPage() {
                 <span key={i} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">{f}</span>
               ))}
             </div>
-            <p className="text-sm text-gray-500 mt-1">Duration: {selectedPlan.duration_months} months</p>
+            <p className="text-sm text-gray-500 mt-1">Duration: {selectedPlan.durationMonths} months</p>
           </div>
         )}
 

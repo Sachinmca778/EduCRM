@@ -142,16 +142,19 @@ export default function NewPaymentPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Something went wrong");
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP ${res.status}: ${res.statusText}`);
       }
 
       const data = await res.json();
-      alert(`Payment recorded successfully! ${data.memberName}`);
+      alert(`Payment recorded successfully! ${data.memberName || 'Payment saved'}`);
 
-      setMessage(`Member created successfully. Code: ${data.memberName}`);
+      setMessage(`Payment recorded successfully. Transaction ID: ${data.transactionId || 'N/A'}`);
     } catch (error) {
-      console.error(error);
-      setMessage("Error creating member");
+      console.error('Payment creation error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setMessage(`Error recording payment: ${errorMessage}`);
+      alert(`Error recording payment: ${errorMessage}`);
     }
     // Simulate save
     alert('Payment recorded successfully!');
