@@ -15,19 +15,69 @@ import {
   Bell
 } from 'lucide-react';
 
+interface Gym {
+  id: number;
+  name: string;
+  address: string;
+}
+
 export default function GymCRMLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [role, setRole] = useState<string | null>(null);
+  const [gyms, setGyms] = useState<Gym[]>([]);
+  const [selectedGym, setSelectedGym] = useState<Gym | null>(null);
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
+    const storedGym = localStorage.getItem('selectedGym');
     setRole(storedRole);
+
+    if (storedGym) {
+      setSelectedGym(JSON.parse(storedGym));
+    }
+
+    // Fetch gyms if user is logged in
+    if (storedRole) {
+      fetchGyms();
+    }
   }, []);
+
+  const fetchGyms = async () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/gym/gyms/all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGyms(data);
+        // Set first gym as default if none selected
+        if (!selectedGym && data.length > 0) {
+          setSelectedGym(data[0]);
+          localStorage.setItem('selectedGym', JSON.stringify(data[0]));
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching gyms:', error);
+    }
+  };
+
+  const handleGymChange = (gym: Gym) => {
+    setSelectedGym(gym);
+    localStorage.setItem('selectedGym', JSON.stringify(gym));
+  };
 
   const handleLogout = async () => {
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
@@ -110,6 +160,27 @@ export default function GymCRMLayout({
           <div className="flex items-center space-x-4">
             {role ? (
               <>
+                {/* Gym Selector */}
+                {gyms.length > 0 && (
+                  <div className="flex items-center space-x-2">
+                    <label className="text-sm font-medium text-foreground">Gym:</label>
+                    <select
+                      value={selectedGym?.id || ''}
+                      onChange={(e) => {
+                        const gym = gyms.find(g => g.id === parseInt(e.target.value));
+                        if (gym) handleGymChange(gym);
+                      }}
+                      className="px-2 py-1 text-sm border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                      {gyms.map(gym => (
+                        <option key={gym.id} value={gym.id}>
+                          {gym.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Bell className="h-6 w-6" />
                 </button>
